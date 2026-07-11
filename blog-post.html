@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">evelyn@post</title>
+<meta id="page-description" name="description" content="">
+<script>
+  (function(){
+    try{
+      if(localStorage.getItem('theme') === 'light'){
+        document.documentElement.setAttribute('data-theme','light');
+      }
+    }catch(e){}
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  /* ---- Article-specific styles (not in style.css) ---- */
+  .post-hero { max-width: 780px; margin: 0 auto; padding: 150px 24px 40px; }
+  .post-back {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--muted, #888); text-decoration: none; font-size: 13px; margin-bottom: 28px;
+  }
+  .post-back:hover { color: var(--fg, #eaeaea); }
+  .post-eyebrow {
+    font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--accent, #7ee787); margin-bottom: 12px;
+  }
+  .post-title { font-size: clamp(28px, 4vw, 42px); line-height: 1.15; margin: 0 0 16px; }
+  .post-meta { display: flex; gap: 14px; flex-wrap: wrap; color: var(--muted, #888); font-size: 13px; }
+  .post-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
+  .post-tags .tag {
+    font-size: 11px; padding: 3px 9px; border: 1px solid var(--border, #2a2a2a);
+    border-radius: 999px; color: var(--muted, #888);
+  }
+  .post-body {
+    max-width: 780px; margin: 0 auto; padding: 0 24px 60px;
+    font-size: 15.5px; line-height: 1.75; color: var(--fg, #e4e4e4);
+  }
+  .post-body p { margin: 0 0 22px; }
+  .post-body h2 {
+    font-size: 20px; margin: 40px 0 16px; padding-top: 8px;
+    border-top: 1px solid var(--border, #2a2a2a);
+  }
+  .post-body code {
+    font-family: 'JetBrains Mono', monospace; background: var(--code-bg, #161616);
+    border: 1px solid var(--border, #2a2a2a); border-radius: 4px; padding: 2px 6px; font-size: 13.5px;
+  }
+  .code-block {
+    margin: 0 0 28px; border: 1px solid var(--border, #2a2a2a); border-radius: var(--radius, 10px);
+    background: var(--terminal-bg, #0d0d0d); overflow: hidden;
+  }
+  .code-block-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 9px 14px; border-bottom: 1px solid var(--border, #2a2a2a);
+    font-size: 11.5px; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--muted, #888);
+  }
+  .code-block-copy {
+    background: transparent; border: 1px solid var(--border-hover, #333); color: var(--muted, #888);
+    font-family: inherit; font-size: 11px; padding: 4px 9px; border-radius: 5px; cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  .code-block-copy:hover { border-color: var(--accent, #7ee787); color: var(--text, #eaeaea); }
+  .code-block pre {
+    margin: 0; padding: 16px 18px; overflow-x: auto;
+  }
+  .code-block pre code {
+    background: none; border: none; padding: 0; font-size: 13px; line-height: 1.65;
+    color: var(--text, #eaeaea); white-space: pre;
+  }
+  .post-outro {
+    max-width: 780px; margin: 0 auto; padding: 0 24px 60px;
+    font-size: 15.5px; line-height: 1.75; color: var(--muted, #aaa); font-style: italic;
+    border-top: 1px solid var(--border, #2a2a2a); padding-top: 28px;
+  }
+  .post-nav {
+    max-width: 780px; margin: 0 auto; padding: 0 24px 80px;
+    display: flex; justify-content: space-between; gap: 16px;
+  }
+  .post-nav a {
+    flex: 1; color: var(--muted, #888); text-decoration: none; font-size: 13px;
+    padding: 14px 16px; border: 1px solid var(--border, #2a2a2a); border-radius: 8px;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  .post-nav a:hover { border-color: var(--accent, #7ee787); color: var(--fg, #eaeaea); }
+  .post-nav .next { text-align: right; }
+  .post-nav .nav-label {
+    display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;
+    margin-bottom: 4px; opacity: 0.7;
+  }
+  .post-nav .spacer { visibility: hidden; }
+  .post-not-found { max-width: 780px; margin: 0 auto; padding: 160px 24px 100px; text-align: center; }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<!-- Header: identical to index.html so styling + mobile menu behavior match -->
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html#hero" class="logo" aria-label="eve portfolio home">
+      <span class="prompt">&gt;_</span> evelyn@portfolio <span class="blink-dot" aria-hidden="true"></span>
+    </a>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="index.html#about" class="nav-link">about</a>
+      <a href="index.html#projects" class="nav-link">projects</a>
+      <a href="index.html#blog" class="nav-link">blog</a>
+      <a href="index.html#skills" class="nav-link">skills</a>
+      <a href="index.html#experience" class="nav-link">experience</a>
+      <a href="index.html#contact" class="nav-link">contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="index.html#contact" class="btn btn-solid">say hello</a>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light and dark mode">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2.5M12 19v2.5M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2.5 12H5M19 12h2.5M4.2 19.8L6 18M18 6l1.8-1.8"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"/></svg>
+      </button>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="index.html#about" class="nav-link">about</a>
+    <a href="index.html#projects" class="nav-link">projects</a>
+    <a href="index.html#blog" class="nav-link">blog</a>
+    <a href="index.html#skills" class="nav-link">skills</a>
+    <a href="index.html#experience" class="nav-link">experience</a>
+    <a href="index.html#contact" class="nav-link">contact</a>
+  </div>
+</header>
+
+<main id="main">
+  <article id="post-root">
+    <!-- Filled in by script below. If the slug isn't found, a "not found" message renders instead. -->
+  </article>
+</main>
+
+<footer>
+  <div class="container footer-inner">
+    <div class="logo"><span class="prompt">&gt;_</span> evelyn@portfolio</div>
+    <div class="footer-links">
+      <a href="#" class="footer-link" aria-label="GitHub">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.5 0 12.3c0 5.44 3.44 10.05 8.2 11.68.6.11.82-.27.82-.6 0-.29-.01-1.07-.02-2.1-3.34.75-4.04-1.65-4.04-1.65-.55-1.43-1.34-1.81-1.34-1.81-1.09-.77.08-.76.08-.76 1.2.09 1.84 1.26 1.84 1.26 1.07 1.87 2.81 1.33 3.5 1.02.11-.79.42-1.33.76-1.64-2.67-.31-5.47-1.37-5.47-6.09 0-1.35.47-2.44 1.24-3.31-.12-.31-.54-1.56.12-3.26 0 0 1.01-.33 3.3 1.26a11.2 11.2 0 0 1 6 0c2.29-1.59 3.3-1.26 3.3-1.26.66 1.7.24 2.95.12 3.26.77.87 1.24 1.96 1.24 3.31 0 4.73-2.81 5.77-5.49 6.08.43.38.81 1.12.81 2.27 0 1.64-.02 2.96-.02 3.36 0 .33.22.72.83.6A12.32 12.32 0 0 0 24 12.3C24 5.5 18.63 0 12 0Z"/></svg>
+      </a>
+      <a href="#" class="footer-link" aria-label="LinkedIn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg>
+      </a>
+      <a href="mailto:asyncbyevelyn@gmail.com" class="footer-link" aria-label="Email">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18v12H3z"/><path d="m3 7 9 6 9-6"/></svg>
+      </a>
+    </div>
+    <div class="footer-copy">evelyn@portfolio:~$ echo $(date +%Y) &nbsp; → &nbsp; 2026.</div>
+  </div>
+</footer>
+
+<script src="js/blog_data.js"></script>
+<script src="js/script.js"></script>
+<script>
+  (function(){
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get('post');
+    const post = slug && window.blogPosts ? window.blogPosts[slug] : null;
+    const root = document.getElementById('post-root');
+
+    if(!post){
+      root.innerHTML = `
+        <div class="post-not-found">
+          <h1 class="post-title">Post not found</h1>
+          <p style="color:var(--muted,#888);margin:16px 0 28px;">
+            No post matches "${slug || ''}". It may have been moved or the link is out of date.
+          </p>
+          <a href="index.html#blog" class="post-back">&larr; back to blog</a>
+        </div>`;
+      return;
+    }
+
+    document.getElementById('page-title').textContent = post.title + ' :: evelyn@portfolio';
+    document.getElementById('page-description').setAttribute('content', post.intro.replace(/\s+/g, ' ').trim().slice(0, 155));
+
+    function escapeHtml(str){
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    // Optional per-section code block: sections can include `code` (the snippet)
+    // and `lang` (a short label like "python" or "pseudocode") to render a
+    // terminal-style block with a copy button beneath the section's prose.
+    function codeBlockHTML(s){
+      if(!s.code) return '';
+      const lang = s.lang || 'code';
+      return `
+        <div class="code-block">
+          <div class="code-block-head">
+            <span>${escapeHtml(lang)}</span>
+            <button type="button" class="code-block-copy">copy</button>
+          </div>
+          <pre><code>${escapeHtml(s.code)}</code></pre>
+        </div>`;
+    }
+
+    const tagsHTML = (post.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
+    const sectionsHTML = (post.sections || []).map(s => `
+        <h2>${s.heading}</h2>
+        <p>${s.body}</p>
+        ${codeBlockHTML(s)}
+      `).join('');
+
+    // prev/next based on shared ordering in blog-data.js
+    const order = window.blogPostOrder || Object.keys(window.blogPosts);
+    const idx = order.indexOf(slug);
+    const prevSlug = idx > 0 ? order[idx - 1] : null;
+    const nextSlug = idx >= 0 && idx < order.length - 1 ? order[idx + 1] : null;
+
+    root.innerHTML = `
+      <div class="post-hero">
+        <a href="index.html#blog" class="post-back">&larr; back to blog</a>
+        <div class="post-eyebrow">Engineering Notes</div>
+        <h1 class="post-title">${post.title}</h1>
+        <div class="post-meta">
+          <span>${post.date}</span><span>&middot;</span><span>${post.read} read</span><span>&middot;</span><span>by Evelyn</span>
+        </div>
+        <div class="post-tags">${tagsHTML}</div>
+      </div>
+
+      <div class="post-body">
+        <p>${post.intro}</p>
+        ${sectionsHTML}
+      </div>
+
+      <div class="post-outro">${post.outro}</div>
+
+      <nav class="post-nav" aria-label="Post navigation">
+        ${prevSlug
+          ? `<a href="blog-post.html?post=${prevSlug}" class="prev"><span class="nav-label">&larr; previous</span>${window.blogPosts[prevSlug].title}</a>`
+          : `<span class="spacer"></span>`}
+        ${nextSlug
+          ? `<a href="blog-post.html?post=${nextSlug}" class="next"><span class="nav-label">next &rarr;</span>${window.blogPosts[nextSlug].title}</a>`
+          : `<span class="spacer"></span>`}
+      </nav>
+    `;
+
+    // Copy-to-clipboard for any code blocks in this post
+    root.querySelectorAll('.code-block-copy').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const code = btn.closest('.code-block').querySelector('code').textContent;
+        navigator.clipboard.writeText(code).then(() => {
+          const original = btn.textContent;
+          btn.textContent = 'copied';
+          setTimeout(() => { btn.textContent = original; }, 1500);
+        });
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>

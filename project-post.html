@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">evelyn@project</title>
+<meta id="page-description" name="description" content="">
+<script>
+  (function(){
+    try{
+      if(localStorage.getItem('theme') === 'light'){
+        document.documentElement.setAttribute('data-theme','light');
+      }
+    }catch(e){}
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  /* ---- Project-page-specific styles (not in style.css) ---- */
+  .project-hero { max-width: 780px; margin: 0 auto; padding: 150px 24px 0; }
+  .project-back {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--muted); text-decoration: none; font-size: 13px; margin-bottom: 28px;
+  }
+  .project-back:hover { color: var(--text); }
+  .project-eyebrow {
+    font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 12px;
+  }
+  .project-title { font-size: clamp(28px, 4vw, 42px); line-height: 1.15; margin: 0 0 16px; }
+  .project-meta { display: flex; gap: 14px; flex-wrap: wrap; color: var(--muted); font-size: 13px; align-items: center; }
+  .project-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
+  .project-tags .tag {
+    font-size: 11px; padding: 3px 9px; border: 1px solid var(--border);
+    border-radius: 999px; color: var(--muted);
+  }
+  .project-cover {
+    max-width: 780px; margin: 36px auto 0; padding: 0 24px;
+  }
+  .project-cover img {
+    width: 100%; display: block; border-radius: var(--radius-lg);
+    border: 1px solid var(--border); background: var(--bg-raised);
+  }
+  .project-cover-placeholder {
+    width: 100%; aspect-ratio: 16 / 8; border-radius: var(--radius-lg);
+    border: 1px solid var(--border); background: var(--bg-raised);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted-dim); font-size: 13px;
+  }
+  .project-body {
+    max-width: 780px; margin: 0 auto; padding: 40px 24px 20px;
+    font-size: 15.5px; line-height: 1.75; color: var(--text);
+  }
+  .project-body p { margin: 0 0 22px; }
+  .project-cta {
+    max-width: 780px; margin: 0 auto; padding: 0 24px 60px;
+    display: flex; gap: 12px; flex-wrap: wrap;
+  }
+  .project-nav {
+    max-width: 780px; margin: 0 auto; padding: 0 24px 80px;
+    display: flex; justify-content: space-between; gap: 16px;
+  }
+  .project-nav a {
+    flex: 1; color: var(--muted); text-decoration: none; font-size: 13px;
+    padding: 14px 16px; border: 1px solid var(--border); border-radius: 8px;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  .project-nav a:hover { border-color: var(--accent); color: var(--text); }
+  .project-nav .next { text-align: right; }
+  .project-nav .nav-label {
+    display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;
+    margin-bottom: 4px; opacity: 0.7;
+  }
+  .project-nav .spacer { visibility: hidden; }
+  .project-not-found { max-width: 780px; margin: 0 auto; padding: 160px 24px 100px; text-align: center; }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<!-- Header: identical to index.html so styling + mobile menu + theme toggle behavior match -->
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html#hero" class="logo" aria-label="eve portfolio home">
+      <span class="prompt">&gt;_</span> evelyn@portfolio <span class="blink-dot" aria-hidden="true"></span>
+    </a>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="index.html#about" class="nav-link">about</a>
+      <a href="index.html#projects" class="nav-link">projects</a>
+      <a href="index.html#blog" class="nav-link">blog</a>
+      <a href="index.html#skills" class="nav-link">skills</a>
+      <a href="index.html#experience" class="nav-link">experience</a>
+      <a href="index.html#contact" class="nav-link">contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="index.html#contact" class="btn btn-solid">say hello</a>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light and dark mode">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2.5M12 19v2.5M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2.5 12H5M19 12h2.5M4.2 19.8L6 18M18 6l1.8-1.8"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"/></svg>
+      </button>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="index.html#about" class="nav-link">about</a>
+    <a href="index.html#projects" class="nav-link">projects</a>
+    <a href="index.html#blog" class="nav-link">blog</a>
+    <a href="index.html#skills" class="nav-link">skills</a>
+    <a href="index.html#experience" class="nav-link">experience</a>
+    <a href="index.html#contact" class="nav-link">contact</a>
+  </div>
+</header>
+
+<main id="main">
+  <article id="project-root">
+    <!-- Filled in by script below. If the slug isn't found, a "not found" message renders instead. -->
+  </article>
+</main>
+
+<footer>
+  <div class="container footer-inner">
+    <div class="logo"><span class="prompt">&gt;_</span> evelyn@portfolio</div>
+    <div class="footer-links">
+      <a href="#" class="footer-link" aria-label="GitHub">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.5 0 12.3c0 5.44 3.44 10.05 8.2 11.68.6.11.82-.27.82-.6 0-.29-.01-1.07-.02-2.1-3.34.75-4.04-1.65-4.04-1.65-.55-1.43-1.34-1.81-1.34-1.81-1.09-.77.08-.76.08-.76 1.2.09 1.84 1.26 1.84 1.26 1.07 1.87 2.81 1.33 3.5 1.02.11-.79.42-1.33.76-1.64-2.67-.31-5.47-1.37-5.47-6.09 0-1.35.47-2.44 1.24-3.31-.12-.31-.54-1.56.12-3.26 0 0 1.01-.33 3.3 1.26a11.2 11.2 0 0 1 6 0c2.29-1.59 3.3-1.26 3.3-1.26.66 1.7.24 2.95.12 3.26.77.87 1.24 1.96 1.24 3.31 0 4.73-2.81 5.77-5.49 6.08.43.38.81 1.12.81 2.27 0 1.64-.02 2.96-.02 3.36 0 .33.22.72.83.6A12.32 12.32 0 0 0 24 12.3C24 5.5 18.63 0 12 0Z"/></svg>
+      </a>
+      <a href="#" class="footer-link" aria-label="LinkedIn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg>
+      </a>
+      <a href="mailto:asyncbyevelyn@gmail.com" class="footer-link" aria-label="Email">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18v12H3z"/><path d="m3 7 9 6 9-6"/></svg>
+      </a>
+    </div>
+    <div class="footer-copy">evelyn@portfolio:~$ echo $(date +%Y) &nbsp; → &nbsp; 2026.</div>
+  </div>
+</footer>
+
+<script src="js/blog_data.js"></script>
+<script src="js/project_data.js"></script>
+<script src="js/script.js"></script>
+<script>
+  (function(){
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get('project');
+    const post = slug && window.projectPosts ? window.projectPosts[slug] : null;
+    const root = document.getElementById('project-root');
+
+    if(!post){
+      root.innerHTML = `
+        <div class="project-not-found">
+          <h1 class="project-title">Project not found</h1>
+          <p style="color:var(--muted);margin:16px 0 28px;">
+            No project matches "${slug || ''}". It may have been renamed or the link is out of date.
+          </p>
+          <a href="index.html#projects" class="project-back">&larr; back to projects</a>
+        </div>`;
+      return;
+    }
+
+    document.getElementById('page-title').textContent = post.title + ' :: evelyn@portfolio';
+    document.getElementById('page-description').setAttribute('content', (post.short || '').replace(/\s+/g, ' ').trim().slice(0, 155));
+
+    const tagsHTML = (post.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
+
+    // Full description: split on blank lines into paragraphs
+    const paragraphs = (post.description || post.short || '')
+      .split(/\n\s*\n/)
+      .map(p => `<p>${p.trim()}</p>`)
+      .join('');
+
+    const coverHTML = post.image
+      ? `<div class="project-cover"><img src="${post.image}" alt="${post.title} cover image"></div>`
+      : `<div class="project-cover"><div class="project-cover-placeholder">no cover image set for this project yet</div></div>`;
+
+    const githubHTML = post.github
+      ? `<a href="${post.github}" target="_blank" rel="noopener" class="btn btn-solid">view on github</a>`
+      : '';
+
+    // prev/next based on shared ordering in project_data.js
+    const order = window.projectPostOrder || Object.keys(window.projectPosts);
+    const idx = order.indexOf(slug);
+    const prevSlug = idx > 0 ? order[idx - 1] : null;
+    const nextSlug = idx >= 0 && idx < order.length - 1 ? order[idx + 1] : null;
+
+    root.innerHTML = `
+      <div class="project-hero">
+        <a href="index.html#projects" class="project-back">&larr; back to projects</a>
+        <div class="project-eyebrow">Selected Work</div>
+        <h1 class="project-title">${post.title}</h1>
+        <div class="project-meta">
+          <span>${post.date || ''}</span>
+        </div>
+        <div class="project-tags">${tagsHTML}</div>
+      </div>
+
+      ${coverHTML}
+
+      <div class="project-body">
+        ${paragraphs}
+      </div>
+
+      <div class="project-cta">${githubHTML}</div>
+
+      <nav class="project-nav" aria-label="Project navigation">
+        ${prevSlug
+          ? `<a href="project-post.html?project=${prevSlug}" class="prev"><span class="nav-label">&larr; previous</span>${window.projectPosts[prevSlug].title}</a>`
+          : `<span class="spacer"></span>`}
+        ${nextSlug
+          ? `<a href="project-post.html?project=${nextSlug}" class="next"><span class="nav-label">next &rarr;</span>${window.projectPosts[nextSlug].title}</a>`
+          : `<span class="spacer"></span>`}
+      </nav>
+    `;
+  })();
+</script>
+
+</body>
+</html>

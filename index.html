@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>evelyn@portfolio</title>
+<script>
+  (function(){
+    try{
+      if(localStorage.getItem('theme') === 'light'){
+        document.documentElement.setAttribute('data-theme','light');
+      }
+    }catch(e){}
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="#hero" class="logo" aria-label="eve portfolio home">
+      <span class="prompt">&gt;_</span> evelyn@portfolio <span class="blink-dot" aria-hidden="true"></span>
+    </a>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="#about" class="nav-link" data-section="about">about</a>
+      <a href="#education" class="nav-link" data-section="education">education</a>
+      <a href="#projects" class="nav-link" data-section="projects">projects</a>
+      <a href="#blog" class="nav-link" data-section="blog">blog</a>
+      <a href="#skills" class="nav-link" data-section="skills">skills</a>
+      <a href="#contact" class="nav-link" data-section="contact">contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#" class="btn" id="resume-btn">./resume.pdf</a>
+      <a href="#contact" class="btn btn-solid">say hello</a>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light and dark mode">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2.5M12 19v2.5M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2.5 12H5M19 12h2.5M4.2 19.8L6 18M18 6l1.8-1.8"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"/></svg>
+      </button>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#about" class="nav-link">about</a>
+    <a href="#education" class="nav-link">education</a>
+    <a href="#projects" class="nav-link">projects</a>
+    <a href="#blog" class="nav-link">blog</a>
+    <a href="#skills" class="nav-link">skills</a>
+    <a href="#contact" class="nav-link">contact</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- HERO / TERMINAL -->
+  <section class="hero" id="hero" style="border-top:none;padding-top:130px;">
+    <div class="hero-eyebrow">available for select engagements &middot; based in remote / UTC</div>
+
+    <div class="terminal-window" role="region" aria-label="Interactive terminal">
+      <div class="terminal-titlebar">
+        <span class="tb-dot"></span><span class="tb-dot"></span><span class="tb-dot"></span>
+        <span class="tb-name">evelyn@portfolio: ~</span>
+      </div>
+      <div class="terminal-body" id="term-body" tabindex="0">
+        <div class="terminal-line"><span class="p1">evelyn@portfolio:~$</span> <span class="p2">whoami</span></div>
+        <div class="terminal-out" id="intro-out"></div>
+      </div>
+      <form class="terminal-input-row" id="term-form">
+        <span class="p1">evelyn@portfolio:~$</span>
+        <input id="term-input" type="text" autocomplete="off" spellcheck="false" aria-label="Terminal command input" placeholder="type 'help' to get started" />
+        <span class="cursor" aria-hidden="true"></span>
+      </form>
+    </div>
+
+    <div class="hero-hint">
+      <span><kbd>help</kbd> list commands</span>
+      <span><kbd>projects</kbd> view work</span>
+      <span><kbd>&uarr;</kbd> <kbd>&darr;</kbd> command history</span>
+      <span><kbd>clear</kbd> reset screen</span>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="section-tag">01 / about</span>
+        <h2 class="section-title">Systems that stay boring in production.</h2>
+      </div>
+      <div class="reveal" style="max-width:700px;">
+        <p style="color:var(--muted);font-size:15px;margin-bottom:18px;">
+          I'm <strong>Evelyn</strong> or Benjarat Tamwong, an incoming Computer Engineering student focused on full-stack development, networking, and cybersecurity. I enjoy building software that's fast, reliable, and thoughtfully engineered—from responsive web applications to backend services, databases, and data-driven tools.
+        </p>
+
+        <p style="color:var(--muted);font-size:15px;">
+          My work includes personal projects in web development, Python automation, network programming, and data visualization. Outside of coding, I continuously explore new technologies to strengthen my software engineering and cybersecurity skills.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="section-tag">02/ education</span>
+        <h2 class="section-title">Education, certifications, and continuous learning.</h2>
+      </div>
+      <div class="reveal" style="max-width:700px;">
+        <div class="education-item" style="padding-top: 5px;">
+          <div class="education-year">2016 – 2024</div>
+          <div class="education-content">
+            <h3>Ambassador Bilingual School (ABS)</h3>
+            <p style="color:var(--muted);">
+              Completed primary and lower secondary education through Grade 10,
+              building a strong academic foundation with an emphasis on English,
+              science, and mathematics.
+            </p>
+          </div>
+        </div>
+
+        <div class="education-item">
+          <div class="education-year">
+            2024 – 2026
+          </div>
+          <div class="education-content">
+            <h3>Ambassador Bilingual Academy (ABA)</h3>
+            <p style="color:var(--muted);">
+              Senior High School (Grades 11–12). Graduated with the Class of
+              2025–2026 while serving as President of the Coding Club and actively
+              participating in STEM projects and competitions.
+            </p>
+
+            <ul class="education-highlights">
+              <li>With Honor – Cum Laude</li>
+              <li>GPAX: 3.99</li>
+              <li>President, Coding Club</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="education-item">
+          <div class="education-year">2026 – 2030 <span class="current">Current</span></div>
+          <div class="education-content">
+            <h3>Rajamangala University of Technology Lanna (RMUTL)</h3>
+            <p style="color:var(--muted);">
+              Bachelor of Engineering in Computer Engineering.
+              Currently focusing on networking, software engineering,
+              and cybersecurity.
+            </p>
+
+            <ul class="education-highlights">
+              <li>Current GPA: 3.84</li>
+            </ul>
+
+            <span class="education-note">Expected Graduation: 2030</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="section-tag">02 / projects</span>
+        <h2 class="section-title">Selected work</h2>
+        <p class="section-desc">A handful of things I've built, broken, and rebuilt. Mostly backend-heavy, occasionally with a UI attached.</p>
+      </div>
+
+      <div class="project-grid" id="project-grid">
+        <!-- Rendered by script.js from js/project_data.js (featured projects only) -->
+      </div>
+
+      <div class="project-more reveal">
+        <a href="projects.html" class="btn">view all projects &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOG -->
+  <section id="blog">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="section-tag">03 / blog</span>
+        <h2 class="section-title">Notes &amp; writing</h2>
+        <p class="section-desc">Mostly backend engineering, infrastructure tradeoffs, and things I had to learn the hard way.</p>
+      </div>
+
+      <div class="blog-list" id="blog-list">
+        <!-- Rendered by script.js from js/blog_data.js (most recent posts only) -->
+      </div>
+
+      <div class="blog-more reveal" style="padding-top: 15px;">
+        <a href="blogs.html" class="btn">view all posts &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="section-tag">04 / system</span>
+        <h2 class="section-title">System Configuration</h2>
+      </div>
+
+      <div class="skills-grid">
+
+        <div class="skill-card reveal">
+          <h4>languages</h4>
+          <div class="badge-row">
+            <span class="badge">Python</span>
+            <span class="badge">JavaScript</span>
+            <span class="badge">HTML5</span>
+            <span class="badge">CSS3</span>
+            <span class="badge">C</span>
+            <span class="badge">C++</span>
+            <span class="badge">SQL</span>
+          </div>
+        </div>
+
+        <div class="skill-card reveal">
+          <h4>frontend</h4>
+          <div class="badge-row">
+            <span class="badge">React</span>
+            <span class="badge">Next.js</span>
+            <span class="badge">Tailwind CSS</span>
+            <span class="badge">Framer Motion</span>
+            <span class="badge">Responsive Design</span>
+            <span class="badge">Vite</span>
+          </div>
+        </div>
+
+        <div class="skill-card reveal">
+          <h4>backend & databases</h4>
+          <div class="badge-row">
+            <span class="badge">Node.js</span>
+            <span class="badge">Express.js</span>
+            <span class="badge">PostgreSQL</span>
+            <span class="badge">Flask</span>
+          </div>
+        </div>
+
+        <div class="skill-card reveal">
+          <h4>python & data</h4>
+          <div class="badge-row">
+            <span class="badge">Pandas</span>
+            <span class="badge">NumPy</span>
+            <span class="badge">Scikit-learn</span>
+            <span class="badge">XGBoost</span>
+            <span class="badge">FastF1</span>
+            <span class="badge">psutil</span>
+          </div>
+        </div>
+
+        <div class="skill-card reveal">
+          <h4>tools</h4>
+          <div class="badge-row">
+            <span class="badge">Git</span>
+            <span class="badge">GitHub</span>
+            <span class="badge">VS Code</span>
+            <span class="badge">Linux</span>
+            <span class="badge">FFmpeg</span>
+            <span class="badge">yt-dlp</span>
+          </div>
+        </div>
+
+        <div class="skill-card reveal">
+          <h4>currently learning</h4>
+          <div class="badge-row">
+            <span class="badge">Network Engineering</span>
+            <span class="badge">Cybersecurity</span>
+            <span class="badge">Machine Learning</span>
+            <span class="badge">Computer Networks</span>
+            <span class="badge">System Design</span>
+          </div>
+        </div>
+
+        <div class="skill-card reveal">
+          <h4>cybersecurity</h4>
+          <div class="badge-row">
+            <span class="badge">Web Security</span>
+            <span class="badge">OWASP Top 10</span>
+            <span class="badge">Network Security</span>
+            <span class="badge">Linux</span>
+            <span class="badge">Wireshark</span>
+            <span class="badge">Nmap</span>
+          </div>
+        </div>
+
+        <div class="skill-card reveal">
+          <h4>ctf & hacking</h4>
+          <div class="badge-row">
+            <span class="badge">OSINT</span>
+            <span class="badge">Cryptography</span>
+            <span class="badge">Reverse Engineering</span>
+            <span class="badge">Binary Exploitation</span>
+            <span class="badge">Web Exploitation</span>
+            <span class="badge">Forensics</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="section-tag">05 / contact</span>
+        <h2 class="section-title">Get in touch</h2>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-info reveal">
+          <p>Open to senior backend and full-stack roles, plus select consulting work. Usually replies within a day.</p>
+          <div class="contact-line"><span class="label">email</span><a href="mailto:asyncbyevelyn@gmail.com">asyncbyevelyn@gmail.com</a></div>
+          <div class="contact-line"><span class="label">github</span><a href="https://github.com/evelynV-exe">github.com/evelynV-exe</a></div>
+          <div class="contact-line"><span class="label">instagram</span><a href="https://www.instagram.com/0xevelyn.code/">instagram.com/0xevelyn.code</a></div>
+          <div class="contact-line"><span class="label">linkedin</span><a href="https://linkedin.com/in/evelynbt">linkedin.com/in/evelynbt</a></div>
+          <div class="contact-line"><span class="label">location</span><span style="color:var(--muted);">Remote &middot; UTC±1</span></div>
+        </div>
+
+        <form class="reveal" id="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="contact">
+          <p class="hidden" style="display:none;">
+            <label>Don't fill this out: <input name="bot-field" /></label>
+          </p>
+          
+          <div class="field">
+            <label for="name">name</label>
+            <input id="name" name="name" type="text" placeholder="name" required>
+          </div>
+          <div class="field">
+            <label for="email">email</label>
+            <input id="email" name="email" type="email" placeholder="name@gmail.com" required>
+          </div>
+          <div class="field">
+            <label for="message">message</label>
+            <textarea id="message" name="message" placeholder="what are you building?" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-solid" style="width:100%;justify-content:center;">$ send_message --now</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container footer-inner">
+    <div class="logo"><span class="prompt">&gt;_</span> evelyn@portfolio</div>
+    <div class="footer-links">
+      <a href="#" class="footer-link" aria-label="GitHub">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.5 0 12.3c0 5.44 3.44 10.05 8.2 11.68.6.11.82-.27.82-.6 0-.29-.01-1.07-.02-2.1-3.34.75-4.04-1.65-4.04-1.65-.55-1.43-1.34-1.81-1.34-1.81-1.09-.77.08-.76.08-.76 1.2.09 1.84 1.26 1.84 1.26 1.07 1.87 2.81 1.33 3.5 1.02.11-.79.42-1.33.76-1.64-2.67-.31-5.47-1.37-5.47-6.09 0-1.35.47-2.44 1.24-3.31-.12-.31-.54-1.56.12-3.26 0 0 1.01-.33 3.3 1.26a11.2 11.2 0 0 1 6 0c2.29-1.59 3.3-1.26 3.3-1.26.66 1.7.24 2.95.12 3.26.77.87 1.24 1.96 1.24 3.31 0 4.73-2.81 5.77-5.49 6.08.43.38.81 1.12.81 2.27 0 1.64-.02 2.96-.02 3.36 0 .33.22.72.83.6A12.32 12.32 0 0 0 24 12.3C24 5.5 18.63 0 12 0Z"/></svg>
+      </a>
+      <a href="#" class="footer-link" aria-label="LinkedIn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg>
+      </a>
+      <a href="mailto:asyncbyevelyn@gmail.com" class="footer-link" aria-label="Email">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18v12H3z"/><path d="m3 7 9 6 9-6"/></svg>
+      </a>
+    </div>
+    <div class="footer-copy">evelyn@portfolio:~$ echo $(date +%Y) &nbsp; → &nbsp; 2026.</div>
+  </div>
+</footer>
+
+<script src="js/blog_data.js"></script>
+<script src="js/project_data.js"></script>
+<script src="js/script.js"></script>
+
+</body>
+</html>
