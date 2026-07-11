@@ -226,7 +226,7 @@
   }
 
   function typeIntro(){
-    const text = "whoami Evelyn (Benjarat Tamwong) — full-stack developer. Computer Engineering student. Networking & cybersecurity enthusiast.";
+    const text = "whoami Evelyn (Benjarat Tamwong) — Computer Engineering student. Networking & cybersecurity enthusiast.";
     let i = 0;
     introOut.classList.add('terminal-out');
     const iv = setInterval(() => {
