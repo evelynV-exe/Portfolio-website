@@ -27,7 +27,7 @@
   }));
 
   // ---------- Active nav on scroll ----------
-  const sections = ['about','education','projects','blog','skills','contact'];
+  const sections = ['about','achievements','projects','blog','skills','experience','contact'];
   const navLinks = document.querySelectorAll('.main-nav .nav-link');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -51,6 +51,32 @@
     });
   }, { threshold: 0.12 });
   document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  // ---------- Homepage featured achievements grid ----------
+  const achievementsGridEl = document.getElementById('achievements-grid');
+  if(achievementsGridEl && window.achievements){
+    const order = window.achievementOrder || Object.keys(window.achievements);
+    const HOMEPAGE_ACHIEVEMENT_COUNT = 4;
+    const featured = order.filter(key => window.achievements[key].featured).slice(0, HOMEPAGE_ACHIEVEMENT_COUNT);
+    achievementsGridEl.innerHTML = featured.map(key => {
+      const a = window.achievements[key];
+      const tags = (a.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
+      const linkHTML = a.link ? `<a href="${a.link}" target="_blank" rel="noopener" class="achievement-link">view &rarr;</a>` : '';
+      return `
+        <article class="achievement-card reveal">
+          <div class="achievement-top">
+            <span class="achievement-icon">${a.icon || '🏅'}</span>
+            <span class="achievement-date">${a.date || ''}</span>
+          </div>
+          <h3>${a.title}</h3>
+          <span class="achievement-category">${a.category || ''}</span>
+          <p>${a.description || ''}</p>
+          <div class="achievement-tag-row">${tags}</div>
+          ${linkHTML}
+        </article>`;
+    }).join('');
+    achievementsGridEl.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+  }
 
   // ---------- Homepage featured project grid ----------
   const projectGridEl = document.getElementById('project-grid');
@@ -226,7 +252,7 @@
   }
 
   function typeIntro(){
-    const text = "whoami Evelyn (Benjarat Tamwong) — Computer Engineering student. Networking & cybersecurity enthusiast.";
+    const text = "whoami Evelyn (Benjarat Tamwong) — full-stack developer. Computer Engineering student. Networking & cybersecurity enthusiast.";
     let i = 0;
     introOut.classList.add('terminal-out');
     const iv = setInterval(() => {
