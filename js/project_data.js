@@ -8,7 +8,7 @@ window.projectPosts = {
     title: "Terminal Portfolio",
     date: "2026",
     tags: ["HTML", "CSS", "JavaScript"],
-    image: "terminal.png",
+    image: "img/terminal.png",
     short: "A terminal-inspired personal portfolio showcasing my projects, blogs, education, and technical journey.",
     description:
       "A fully responsive personal portfolio designed around a Linux terminal aesthetic. The site includes an interactive terminal, project showcase, blog system, education timeline, and animated interface.\n\n" +
