@@ -156,7 +156,6 @@ return dist   // shortest distance from source to every node`
         Understanding this layout is fundamental to pointer arithmetic and manual
         address calculation.`
       },
-
       {
         heading: "One-Dimensional (1D) Arrays",
         body: `A one-dimensional array consists of a single sequence of elements
