@@ -67,11 +67,11 @@
   }
   .code-block-copy:hover { border-color: var(--accent, #7ee787); color: var(--text, #eaeaea); }
   .code-block pre {
-    margin: 0; padding: 16px 18px; overflow-x: auto;
+    margin: 0; padding: 20px; overflow-x: auto; overflow-y: hidden;
   }
   .code-block pre code {
-    background: none; border: none; padding: 0; font-size: 13px; line-height: 1.65;
-    color: var(--text, #eaeaea); white-space: pre;
+    display: block; background: none; border: none; padding: 0; font-size: 13px; line-height: 1.65;
+    color: var(--text, #eaeaea); white-space: pre; tab-size: 4;
   }
   .post-outro {
     max-width: 780px; margin: 0 auto; padding: 0 24px 60px;
@@ -160,7 +160,7 @@
 <script src="js/blog_data.js"></script>
 <script src="js/script.js"></script>
 <script>
-  (function(){
+  (async function(){
     const params = new URLSearchParams(window.location.search);
     const slug = params.get('post');
     const post = slug && window.blogPosts ? window.blogPosts[slug] : null;
@@ -181,6 +181,23 @@
     document.getElementById('page-title').textContent = post.title + ' :: evelyn@portfolio';
     document.getElementById('page-description').setAttribute('content', post.intro.replace(/\s+/g, ' ').trim().slice(0, 155));
 
+    function dedent(text) {
+      text = text.replace(/^\n/, "");
+
+      const lines = text.split("\n");
+
+      const indents = lines
+        .filter(line => line.trim().length)
+        .map(line => line.match(/^ */)[0].length);
+
+      const minIndent = Math.min(...indents);
+
+      return lines
+        .map(line => line.slice(minIndent))
+        .join("\n")
+        .trimEnd();
+    }
+
     function escapeHtml(str){
       return String(str)
         .replace(/&/g, '&amp;')
@@ -200,16 +217,39 @@
             <span>${escapeHtml(lang)}</span>
             <button type="button" class="code-block-copy">copy</button>
           </div>
-          <pre><code>${escapeHtml(s.code)}</code></pre>
+          <pre><code>${escapeHtml(dedent(s.code))}</code></pre>
         </div>`;
     }
 
     const tagsHTML = (post.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
-    const sectionsHTML = (post.sections || []).map(s => `
-        <h2>${s.heading}</h2>
-        <p>${s.body}</p>
-        ${codeBlockHTML(s)}
-      `).join('');
+    const sectionsHTML = await Promise.all(
+    (post.sections || []).map(async (s) => {
+
+        let code = '';
+
+        if (s.codeFile) {
+            const res = await fetch(s.codeFile);
+            code = await res.text();
+        } else if (s.code) {
+            code = s.code;
+        }
+
+        return `
+            <h2>${s.heading}</h2>
+            <p>${s.body}</p>
+            ${
+                code
+                    ? codeBlockHTML({
+                        code,
+                        lang: s.lang
+                    })
+                    : ''
+            }
+        `;
+    })
+);
+
+const html = sectionsHTML.join('');
 
     // prev/next based on shared ordering in blog-data.js
     const order = window.blogPostOrder || Object.keys(window.blogPosts);

@@ -129,6 +129,100 @@ return dist   // shortest distance from source to every node`
     outro: `Packet analysis is one of the most valuable practical skills in
     cybersecurity because it reveals exactly what devices are communicating
     across the network.`
+  },
+
+  'array-address-calculation': {
+    title: "Understanding Array Address Calculation in C",
+    date: "July 2026",
+    read: "8 min",
+    tags: ["C Programming", "Memory Management", "Data Structures"],
+
+    intro: `Arrays in C are stored as a continuous block of memory, meaning every
+      element's address is calculated relative to the array's base address.
+      Although accessing elements with expressions like A[i], A[i][j], or
+      A[i][j][k] appears simple, the compiler determines their locations using
+      pointer arithmetic and offset calculations. This article explores how 1D,
+      2D, and 3D arrays are represented in memory and how their addresses are
+      calculated manually.`,
+
+    sections: [
+      {
+        heading: "Memory Layout of Arrays",
+        body: `Arrays in C are stored in contiguous memory, meaning every element
+        is placed one after another without any gaps. The address of the first
+        element is called the base address, and every subsequent element is
+        accessed by adding an offset to this base. Since an int typically occupies
+        4 bytes, advancing one element moves the pointer forward by 4 bytes.
+        Understanding this layout is fundamental to pointer arithmetic and manual
+        address calculation.`
+      },
+
+      {
+        heading: "One-Dimensional (1D) Arrays",
+        body: `A one-dimensional array consists of a single sequence of elements
+        stored continuously in memory. The program dynamically allocates memory
+        using malloc(), then calculates an element's address using the formula:
+        Base Address + (index − lower bound). The difference between the computed
+        pointer and the base pointer represents the element offset, while the byte
+        offset is obtained by multiplying the offset by sizeof(int).`
+      },
+
+      {
+        heading: "Two-Dimensional (2D) Arrays",
+        body: `Although a two-dimensional array appears as rows and columns, C
+        stores it as one continuous block using row-major order. This means every
+        row is stored completely before the next row begins. To locate an element,
+        the program first skips the required number of rows and then moves across
+        the columns. The address formula combines both row and column offsets to
+        produce the final memory location.`
+      },
+
+      {
+        heading: "Three-Dimensional (3D) Arrays",
+        body: `A three-dimensional array extends the same concept by introducing
+        planes. In row-major order, complete planes are stored sequentially,
+        followed by rows within each plane and finally individual columns. The
+        program calculates the address by skipping the required number of planes,
+        rows, and columns before adding the resulting offset to the base address.`
+      },
+
+      {
+        heading: "Alternative Storage Order",
+        body: `The project also demonstrates an alternative mapping where the
+        storage order is Column → Row → Plane instead of the conventional
+        Plane → Row → Column. Changing the order modifies the address calculation
+        formula and results in a different physical arrangement of the same logical
+        array. This illustrates that multidimensional arrays can be linearized in
+        different ways depending on the chosen memory layout.`
+      },
+
+      {
+        heading: "Understanding Offsets",
+        body: `Two types of offsets are displayed throughout the program. The
+        element offset indicates how many integer positions the pointer has moved
+        from the base address, while the byte offset represents the actual number
+        of bytes between the two addresses. Casting pointers to char* allows the
+        program to calculate precise byte differences regardless of the data type.`
+      },
+
+      {
+        heading: "Complete Code Walkthrough",
+        body: `The program begins by dynamically allocating memory for 1D, 2D,
+        and 3D arrays using malloc(). It then stores sample values, calculates
+        their addresses using pointer arithmetic, and prints the base address,
+        computed pointer, element offset, byte offset, and stored value. This
+        provides a practical demonstration of how array indexing is translated
+        into memory addresses at the hardware level.`,
+        lang: "Array.c",
+        codeFile: "code/array.c"
+      },
+    ],
+
+    outro: `Understanding how arrays are mapped into memory is an essential skill
+    for C programmers. By learning how base addresses, offsets, and pointer
+    arithmetic work together, developers gain a deeper understanding of memory
+    management, data structures, and the low-level mechanisms that make array
+    indexing both efficient and predictable.`
   }
 };
 
@@ -136,5 +230,6 @@ return dist   // shortest distance from source to every node`
 window.blogPostOrder = [
   "dijkstra-algorithm",
   "subnetting",
-  "packet-sniffing"
+  "packet-sniffing",
+  "array-address-calculation",
 ];
