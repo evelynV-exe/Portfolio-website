@@ -391,39 +391,55 @@
   } // end if(termBody)
 
   // ---------- Contact form ----------
-  const contactForm = document.getElementById('contact-form');
+  const contactForm = document.getElementById("contact-form");
   if (contactForm) {
-    contactForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const btn = e.target.querySelector('button');
-      const original = btn.textContent;
-      const formData = new FormData(contactForm);
+      contactForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
 
-      btn.textContent = '$ sending...';
-      btn.disabled = true;
+          const btn = contactForm.querySelector("button");
+          const original = btn.textContent;
 
-      try {
-        const res = await fetch('/', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams(formData).toString()
-        });
+          btn.textContent = "$ sending...";
+          btn.disabled = true;
 
-        if (!res.ok) throw new Error('Submission failed');
+          const data = {
+              name: document.getElementById("name").value,
+              email: document.getElementById("email").value,
+              message: document.getElementById("message").value
+          };
 
-        btn.textContent = '$ message_sent \u2713';
-        setTimeout(() => {
-          btn.textContent = original;
-          btn.style.opacity = '1';
-          btn.disabled = false;
-          contactForm.reset();
-        }, 2200);
+          try {
 
-      } catch (err) {
-        btn.textContent = '$ send_failed — retry';
-        btn.disabled = false;
-        setTimeout(() => { btn.textContent = original; }, 2200);
-      }
-    });
+              // Email to you
+              await emailjs.send(
+                  "service_jz6eu4s",
+                  "template_811oowb",
+                  data
+              );
+
+              // Auto reply to visitor
+              await emailjs.send(
+                  "service_jz6eu4s",
+                  "template_ddp1ftp",
+                  data
+              );
+
+              btn.textContent = "$ message_sent ✓";
+              contactForm.reset();
+
+          } catch (err) {
+              console.error(err);
+              btn.textContent = "$ send_failed";
+          }
+
+          setTimeout(() => {
+              btn.textContent = original;
+              btn.disabled = false;
+          }, 2500);
+      });
   }
 })();
+
+emailjs.init({
+    publicKey: "eB8xxb_BF0HatBpdm"
+});

@@ -346,12 +346,7 @@
           <div class="contact-line"><span class="label">location</span><span style="color:var(--muted);">Remote &middot; UTC±1</span></div>
         </div>
 
-        <form class="reveal" id="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-          <input type="hidden" name="form-name" value="contact">
-          <p class="hidden" style="display:none;">
-            <label>Don't fill this out: <input name="bot-field" /></label>
-          </p>
-          
+        <form class="reveal" id="contact-form">
           <div class="field">
             <label for="name">name</label>
             <input id="name" name="name" type="text" placeholder="name" required>
@@ -394,6 +389,7 @@
 <script src="js/project_data.js"></script>
 <script src="js/achievements_data.js"></script>
 <script src="js/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
 </body>
 </html>
