@@ -103,25 +103,49 @@
     projectGridEl.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
   }
 
+  // ---------- Blog date/freshness helpers (shared by homepage list + terminal) ----------
+  // A post is "recent" for TWO_WEEKS_MS after its publishedAt date. Falls back
+  // to parsing the display `date` field ("Jul 2026") for sorting if publishedAt
+  // is missing, so older posts without the field don't crash sorting — they
+  // just never show the NEW badge, since a month-only date can't confirm the
+  // post is within the last 14 days.
+  function parseBlogDate(post){
+    const iso = post.publishedAt ? Date.parse(post.publishedAt) : NaN;
+    if(!isNaN(iso)) return iso;
+    const fallback = Date.parse('1 ' + (post.date || ''));
+    return isNaN(fallback) ? 0 : fallback;
+  }
+
+  const TWO_WEEKS_MS = 14 * 24 * 60 * 60 * 1000;
+  function isRecentPost(post){
+    if(!post.publishedAt) return false; // no exact date = can't confirm it's within 14 days
+    const published = Date.parse(post.publishedAt);
+    return !isNaN(published) && (Date.now() - published) < TWO_WEEKS_MS;
+  }
+
   // ---------- Homepage blog list ----------
   const blogListEl = document.getElementById('blog-list');
   if(blogListEl && window.blogPosts){
-    const order = window.blogPostOrder || Object.keys(window.blogPosts);
-    const HOMEPAGE_POST_COUNT = 3;
-    const recent = order.slice(0, HOMEPAGE_POST_COUNT);
-
     function excerptOf(post){
       // intro strings have soft-wrap whitespace baked in — collapse and trim
       const clean = (post.intro || '').replace(/\s+/g, ' ').trim();
       return clean.length > 140 ? clean.slice(0, 140).trim() + '\u2026' : clean;
     }
 
+    const order = (window.blogPostOrder || Object.keys(window.blogPosts))
+      .slice()
+      .sort((a, b) => parseBlogDate(window.blogPosts[b]) - parseBlogDate(window.blogPosts[a]));
+
+    const HOMEPAGE_POST_COUNT = 3;
+    const recent = order.slice(0, HOMEPAGE_POST_COUNT);
+
     blogListEl.innerHTML = recent.map(key => {
       const p = window.blogPosts[key];
+      const isNew = isRecentPost(p);
       return `
         <a href="blog-post.html?post=${key}" class="blog-item reveal">
           <div class="blog-main">
-            <div class="blog-title">${p.title}</div>
+            <div class="blog-title">${p.title}${isNew ? ' <span class="new-badge">NEW</span>' : ''}</div>
             <div class="blog-excerpt">${excerptOf(p)}</div>
           </div>
           <span class="blog-meta">${p.date} &middot; ${p.read}</span>
@@ -173,9 +197,14 @@
   }
 
   function renderBlogList(){
-    const items = blogOrder.map((key, i) => {
+    const sorted = blogOrder.slice().sort((a, b) =>
+      parseBlogDate(blogData[b]) - parseBlogDate(blogData[a])
+    );
+
+    const items = sorted.map((key, i) => {
       const b = blogData[key];
-      return `<li>[${i + 1}] <strong>${b.title}</strong> &mdash; ${b.date}, ${b.read}</li>`;
+      const isNew = isRecentPost(b);
+      return `<li>[${i + 1}] <strong>${b.title}</strong>${isNew ? ' <span class="new-badge">NEW</span>' : ''} &mdash; ${b.date}, ${b.read}</li>`;
     }).join('');
     return `<span class="out-title">cat ~/blog/latest</span><ul>${items}</ul>type <strong>blog &lt;number&gt;</strong> or <strong>blog &lt;slug&gt;</strong> (e.g. <strong>blog 1</strong> or <strong>blog orms</strong>) for a summary, or open the full post from the blog section.`;
   }
@@ -440,6 +469,8 @@
   }
 })();
 
-emailjs.init({
+if(typeof emailjs !== 'undefined'){
+  emailjs.init({
     publicKey: "eB8xxb_BF0HatBpdm"
-});
+  });
+}

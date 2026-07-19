@@ -137,7 +137,29 @@
 <script>
   (function(){
     const posts = window.blogPosts || {};
-    const order = window.blogPostOrder || Object.keys(posts);
+
+    // Same freshness rules as script.js: sort newest-first using
+    // publishedAt (falls back to the display `date` field), and show the
+    // NEW badge only for 14 days after publishedAt. Kept as a separate copy
+    // here because this inline script runs in its own scope, not script.js's.
+    function parseBlogDate(post){
+      const iso = post.publishedAt ? Date.parse(post.publishedAt) : NaN;
+      if(!isNaN(iso)) return iso;
+      const fallback = Date.parse('1 ' + (post.date || ''));
+      return isNaN(fallback) ? 0 : fallback;
+    }
+
+    const TWO_WEEKS_MS = 14 * 24 * 60 * 60 * 1000;
+    function isRecentPost(post){
+      if(!post.publishedAt) return false;
+      const published = Date.parse(post.publishedAt);
+      return !isNaN(published) && (Date.now() - published) < TWO_WEEKS_MS;
+    }
+
+    const order = (window.blogPostOrder || Object.keys(posts))
+      .slice()
+      .sort((a, b) => parseBlogDate(posts[b]) - parseBlogDate(posts[a]));
+
     const listEl = document.getElementById('all-blog-list');
     const emptyMsg = document.getElementById('blog-empty');
     const filtersEl = document.getElementById('blog-filters');
@@ -156,10 +178,11 @@
 
     function itemHTML(key){
       const p = posts[key];
+      const isNew = isRecentPost(p);
       return `
         <a href="blog-post.html?post=${key}" class="blog-item">
           <div class="blog-main">
-            <div class="blog-title">${p.title}</div>
+            <div class="blog-title">${p.title}${isNew ? ' <span class="new-badge">NEW</span>' : ''}</div>
             <div class="blog-excerpt">${excerptOf(p)}</div>
           </div>
           <span class="blog-meta">${p.date} &middot; ${p.read}</span>

@@ -13,7 +13,8 @@
 window.blogPosts = {
   'dijkstra-algorithm': {
     title: "Understanding Dijkstra's Algorithm",
-    date: "Jul 2026",
+    date: "7 July 2026",
+    publishedAt: "2026-07-07",
     read: "8 min",
     tags: ["DSA", "Algorithms"],
     intro: `Dijkstra's Algorithm is one of the most important shortest-path algorithms
@@ -63,77 +64,10 @@ return dist   // shortest distance from source to every node`
     advanced graph algorithms such as A*, Bellman-Ford, and Floyd-Warshall.`
   },
 
-  subnetting: {
-    title: "Subnetting Made Simple",
-    date: "Jun 2026",
-    read: "7 min",
-    tags: ["Networking", "CCNA"],
-    intro: `Subnetting is one of the first networking skills every engineer should
-      master. Although it can look intimidating at first, it becomes much easier
-      once you understand binary and CIDR notation.`,
-
-    sections: [
-      {
-        heading: "Why subnet?",
-        body: `Subnetting divides large networks into smaller logical segments.
-        This improves security, reduces broadcast traffic, and makes IP address
-        allocation much more efficient.`
-      },
-      {
-        heading: "CIDR notation",
-        body: `CIDR uses prefixes such as /24 or /27 to indicate how many bits
-        belong to the network portion of an IP address. The remaining bits are
-        used for host addresses.`
-      },
-      {
-        heading: "Example",
-        body: `192.168.1.0/24 contains 256 addresses. Splitting it into four /26
-        networks creates four smaller subnets, each containing 64 addresses.`
-      }
-    ],
-
-    outro: `Subnetting becomes much easier with practice. Once you're comfortable
-    with binary calculations, finding network IDs, broadcast addresses, and valid
-    host ranges becomes second nature.`
-  },
-
-  'packet-sniffing': {
-    title: "How Packet Sniffing Works",
-    date: "May 2026",
-    read: "6 min",
-    tags: ["Cybersecurity", "Networking"],
-    intro: `Every packet travelling across a network tells a story. Packet sniffing
-      allows engineers to inspect that traffic for troubleshooting, performance
-      analysis, and security investigations.`,
-
-    sections: [
-      {
-        heading: "What is packet sniffing?",
-        body: `Packet sniffing is the process of capturing network traffic for
-        analysis. Tools such as Wireshark allow engineers to inspect packet
-        headers, protocols, timing, and payload information.`
-      },
-      {
-        heading: "Why security teams use it",
-        body: `Network analysts can detect malware communications, suspicious
-        DNS requests, brute-force attacks, and unusual traffic patterns by
-        examining captured packets.`
-      },
-      {
-        heading: "Important protocols",
-        body: `Understanding Ethernet, ARP, IP, ICMP, TCP, UDP, DNS, HTTP,
-        HTTPS, and TLS makes packet analysis significantly easier.`
-      }
-    ],
-
-    outro: `Packet analysis is one of the most valuable practical skills in
-    cybersecurity because it reveals exactly what devices are communicating
-    across the network.`
-  },
-
   'array-address-calculation': {
     title: "Understanding Array Address Calculation in C",
-    date: "July 2026",
+    date: "13 July 2026",
+    publishedAt: "2026-07-13",
     read: "8 min",
     tags: ["C Programming", "Memory Management", "Data Structures"],
 
@@ -228,7 +162,5 @@ return dist   // shortest distance from source to every node`
 // Controls listing order + prev/next navigation.
 window.blogPostOrder = [
   "dijkstra-algorithm",
-  "subnetting",
-  "packet-sniffing",
   "array-address-calculation",
 ];

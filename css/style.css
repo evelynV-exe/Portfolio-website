@@ -440,6 +440,19 @@
   .blog-arrow{color:var(--accent);flex-shrink:0;font-size:15px;opacity:0;transition:opacity 180ms var(--ease), transform 180ms var(--ease);}
   .blog-item:hover .blog-arrow{opacity:1;transform:translateX(3px);}
 
+  .new-badge{
+    display:inline-block;
+    font-size:0.65em;
+    font-weight:700;
+    letter-spacing:0.03em;
+    color:#0f0;
+    border:1px solid currentColor;
+    border-radius:3px;
+    padding:1px 5px;
+    margin-left:6px;
+    vertical-align:middle;
+  }
+
   /* ---------- Skills ---------- */
   .skills-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
   .skill-card{
