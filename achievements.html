@@ -155,8 +155,12 @@
       const linkHTML = a.link
         ? `<a href="${a.link}" target="_blank" rel="noopener" class="achievement-link">view &rarr;</a>`
         : '';
+      const imageHTML = a.image
+        ? `<img src="${a.image}" alt="${a.title} certificate" class="achievement-image" loading="lazy">`
+        : '';
       return `
         <article class="achievement-card">
+          ${imageHTML}
           <div class="achievement-top">
             <span class="achievement-icon">${a.icon || '🏅'}</span>
             <span class="achievement-date">${a.date || ''}</span>

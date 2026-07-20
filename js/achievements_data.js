@@ -9,7 +9,6 @@
                             "Certification", "Project" (used for filter pills)
     description string  — 1-3 sentence summary
     tags        array   — short keyword chips shown on the card
-    icon        string  — a single emoji used as a visual marker
     link        string  — optional URL ("" if none) e.g. certificate/verify link
     featured    bool    — show on homepage strip
 
@@ -20,30 +19,31 @@
 */
 
 window.achievements = {
-  'honors-cum-laude': {
-    title: "Graduated With Honor — Cum Laude",
-    date: "2025",
+  'road-to-ctf-advance': {
+    title: "ROAD-TO-CTF Advanced",
+    date: "2026-07-19",
     category: "Academic",
     description:
-      "Graduated from Ambassador Bilingual Academy (ABA) with Honor distinction, finishing with a GPAX of 3.99 across the full senior high school curriculum.",
-    tags: ["GPAX 3.99", "Senior High School"],
+      "Participated in the ROAD-TO-CTF Advanced event, a cybersecurity competition that tested skills in web security, cryptography, and reverse engineering. Successfully solved multiple challenges and gained hands-on experience in ethical hacking.",
+    tags: ["Cybersecurity", "CTF"],
+    image: "img/cert/ctf-adv.jpg",
     link: "",
     featured: true
   },
-
-  'coding-club-president': {
-    title: "President, Coding Club",
-    date: "2024 – 2025",
-    category: "Leadership",
+  'road-to-ctf-beginning': {
+    title: "ROAD-TO-CTF Beginning",
+    date: "2026-07-19",
+    category: "Academic",
     description:
-      "Led the school's Coding Club, organizing weekly workshops and mentoring members on web development and programming fundamentals while representing the club in STEM initiatives.",
-    tags: ["Leadership", "Mentorship", "STEM"],
+      "Participated in the ROAD-TO-CTF Beginning event, a cybersecurity competition designed for newcomers to the field. Gained foundational knowledge in web security, cryptography, and reverse engineering.",
+    tags: ["Cybersecurity", "CTF"],
+    image: "img/cert/ctf-begin.jpg",
     link: "",
     featured: true
   },
 };
 
 window.achievementOrder = [
-  'honors-cum-laude',
-  'coding-club-president',
+  "road-to-ctf-advance",
+  "road-to-ctf-beginning"
 ];

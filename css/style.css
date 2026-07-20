@@ -390,6 +390,15 @@
   }
   .achievement-link:hover{border-color:var(--accent);background:rgba(44,255,5,0.06);}
 
+  .achievement-image{
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    border-bottom: 1px solid var(--border);
+    margin: -1px -1px 14px -1px; /* tuck flush against the card edges, adjust to your card padding */
+  }
+
   /* ---------- Projects ---------- */
   .project-grid{
     display:grid;grid-template-columns:repeat(2,1fr);gap:20px;

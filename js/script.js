@@ -54,16 +54,19 @@
 
   // ---------- Homepage featured achievements grid ----------
   const achievementsGridEl = document.getElementById('achievements-grid');
+
   if(achievementsGridEl && window.achievements){
     const order = window.achievementOrder || Object.keys(window.achievements);
     const HOMEPAGE_ACHIEVEMENT_COUNT = 4;
     const featured = order.filter(key => window.achievements[key].featured).slice(0, HOMEPAGE_ACHIEVEMENT_COUNT);
     achievementsGridEl.innerHTML = featured.map(key => {
       const a = window.achievements[key];
+      const imageHTML = a.image ? `<img src="${a.image}" alt="${a.title} certificate" class="achievement-image" loading="lazy">` : '';
       const tags = (a.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
       const linkHTML = a.link ? `<a href="${a.link}" target="_blank" rel="noopener" class="achievement-link">view &rarr;</a>` : '';
       return `
         <article class="achievement-card reveal">
+          ${imageHTML}
           <div class="achievement-top">
             <span class="achievement-icon">${a.icon || '🏅'}</span>
             <span class="achievement-date">${a.date || ''}</span>
@@ -116,7 +119,7 @@
     return isNaN(fallback) ? 0 : fallback;
   }
 
-  const TWO_WEEKS_MS = 14 * 24 * 60 * 60 * 1000;
+  const TWO_WEEKS_MS = 7 * 24 * 60 * 60 * 1000;
   function isRecentPost(post){
     if(!post.publishedAt) return false; // no exact date = can't confirm it's within 14 days
     const published = Date.parse(post.publishedAt);
