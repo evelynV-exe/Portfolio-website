@@ -243,6 +243,7 @@
       <li>about \u2014 who I am</li>
       <li>projects \u2014 selected work (try: projects ${projectOrder[0]})</li>
       <li>blog \u2014 writing &amp; notes (try: blog 1)</li>
+      <li>achievements \u2014 accomplishments and awards</li>
       <li>skills \u2014 tools and technologies</li>
       <li>experience \u2014 education &amp; background</li>
       <li>contact \u2014 get in touch</li>

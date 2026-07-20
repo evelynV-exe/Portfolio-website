@@ -41,9 +41,21 @@ window.achievements = {
     link: "",
     featured: true
   },
+  'basic-cybersecurity': {
+    title: "Certified in Basic Cybersecurity",
+    date: "2026-06-23",
+    category: "Academic",
+    description:
+      "Completed the Basic Cybersecurity course, gaining fundamental knowledge in web security, cryptography, and reverse engineering.",
+    tags: ["Cybersecurity"],
+    image: "img/cert/basic-cyber.png",
+    link: "",
+    featured: true
+  },
 };
 
 window.achievementOrder = [
   "road-to-ctf-advance",
-  "road-to-ctf-beginning"
+  "road-to-ctf-beginning",
+  "basic-cybersecurity"
 ];
