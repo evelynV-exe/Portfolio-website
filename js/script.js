@@ -41,6 +41,12 @@
     if(el) observer.observe(el);
   });
 
+    // ---------- Active nav for non-homepage pages ----------
+  const currentPage = document.body.dataset.page;
+  if(currentPage){
+    navLinks.forEach(l => l.classList.toggle('active', l.dataset.section === currentPage));
+  }
+
   // ---------- Reveal on scroll ----------
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -85,7 +91,7 @@
   const projectGridEl = document.getElementById('project-grid');
   if(projectGridEl && window.projectPosts){
     const order = window.projectPostOrder || Object.keys(window.projectPosts);
-    const HOMEPAGE_PROJECT_COUNT = 4;
+    const HOMEPAGE_PROJECT_COUNT = 3;
     const featured = order.filter(key => window.projectPosts[key].featured).slice(0, HOMEPAGE_PROJECT_COUNT);
     projectGridEl.innerHTML = featured.map(key => {
       const p = window.projectPosts[key];

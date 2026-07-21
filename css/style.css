@@ -410,7 +410,7 @@
 
   /* ---------- Achievements ---------- */
   .achievements-grid{
-    display:grid;grid-template-columns:repeat(2,1fr);gap:20px;
+    display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
   }
   .achievement-card{
     border:1px solid var(--border);border-radius:var(--radius-lg);
@@ -450,7 +450,7 @@
 
   /* ---------- Projects ---------- */
   .project-grid{
-    display:grid;grid-template-columns:repeat(2,1fr);gap:20px;
+    display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
   }
   .project-card{
     border:1px solid var(--border);border-radius:var(--radius-lg);
