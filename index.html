@@ -25,15 +25,6 @@
     <a href="#hero" class="logo" aria-label="eve portfolio home">
       <span class="prompt">&gt;_</span> evelyn@portfolio <span class="blink-dot" aria-hidden="true"></span>
     </a>
-    <nav class="main-nav" aria-label="Primary">
-      <a href="#about" class="nav-link" data-section="about">about</a>
-      <a href="#education" class="nav-link" data-section="experience">education</a>
-      <a href="#achievements" class="nav-link" data-section="achievements">achievements</a>
-      <a href="#projects" class="nav-link" data-section="projects">projects</a>
-      <a href="#blog" class="nav-link" data-section="blog">blog</a>
-      <a href="#skills" class="nav-link" data-section="skills">skills</a>
-      <a href="#contact" class="nav-link" data-section="contact">contact</a>
-    </nav>
     <div class="nav-cta">
       <a href="#" class="btn" id="resume-btn">./resume.pdf</a>
       <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light and dark mode">
@@ -51,10 +42,25 @@
     <a href="#achievements" class="nav-link">achievements</a>
     <a href="#projects" class="nav-link">projects</a>
     <a href="#blog" class="nav-link">blog</a>
+    <a href="#writeups" class="nav-link">write-ups</a>
     <a href="#skills" class="nav-link">skills</a>
     <a href="#contact" class="nav-link">contact</a>
   </div>
 </header>
+
+<!-- left sidebar nav (desktop only — hidden under 861px, mobile-menu takes over) -->
+<aside class="side-nav" aria-label="Primary">
+  <nav class="side-nav-list">
+    <a href="#about" class="nav-link" data-section="about">about</a>
+    <a href="#education" class="nav-link" data-section="education">education</a>
+    <a href="#achievements" class="nav-link" data-section="achievements">achievements</a>
+    <a href="#projects" class="nav-link" data-section="projects">projects</a>
+    <a href="#blog" class="nav-link" data-section="blog">blog</a>
+    <a href="#writeups" class="nav-link" data-section="writeups">write-ups</a>
+    <a href="#skills" class="nav-link" data-section="skills">skills</a>
+    <a href="#contact" class="nav-link" data-section="contact">contact</a>
+  </nav>
+</aside>
 
 <main id="main">
 
@@ -222,11 +228,30 @@
     </div>
   </section>
 
+  <!-- WRITE-UPS -->
+  <section id="writeups">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="section-tag">06 / write-ups</span>
+        <h2 class="section-title">CTF write-ups</h2>
+        <p class="section-desc">Walkthroughs from CTFs and training platforms — web, pwn, crypto, reversing, and forensics challenges.</p>
+      </div>
+
+      <div class="blog-list" id="writeup-list">
+        <!-- Rendered by script.js from js/writeup_data.js (most recent write-ups only) -->
+      </div>
+
+      <div class="blog-more reveal" style="padding-top: 15px;">
+        <a href="writeups.html" class="btn">view all write-ups &rarr;</a>
+      </div>
+    </div>
+  </section>
+
   <!-- SKILLS -->
   <section id="skills">
     <div class="container">
       <div class="section-head reveal">
-        <span class="section-tag">06 / system</span>
+        <span class="section-tag">07 / system</span>
         <h2 class="section-title">System Configuration</h2>
       </div>
 
@@ -332,7 +357,7 @@
   <section id="contact">
     <div class="container">
       <div class="section-head reveal">
-        <span class="section-tag">07 / contact</span>
+        <span class="section-tag">08 / contact</span>
         <h2 class="section-title">Get in touch</h2>
       </div>
 
@@ -387,6 +412,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="js/blog_data.js"></script>
+<script src="js/writeup_data.js"></script>
 <script src="js/project_data.js"></script>
 <script src="js/achievements_data.js"></script>
 <script src="js/script.js"></script>

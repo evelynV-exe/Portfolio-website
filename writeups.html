@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>evelyn@blog</title>
-<meta name="description" content="Full list of writing — filter by topic.">
+<title>evelyn@writeups</title>
+<meta name="description" content="CTF write-ups — filter by category or difficulty.">
 <script>
   (function(){
     try{
@@ -19,7 +19,7 @@
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 <style>
-  /* ---- Blog-index-specific styles (not in style.css) ---- */
+  /* ---- Write-up-index-specific styles (not in style.css) ---- */
   .blog-hero { max-width: 1120px; margin: 0 auto; padding: 150px 24px 0; }
   .blog-back {
     display: inline-flex; align-items: center; gap: 6px;
@@ -49,8 +49,23 @@
   .filter-pill.active{ border-color: var(--accent); color: var(--accent); background: rgba(44,255,5,0.08); }
   .filter-count{ font-size: 12px; color: var(--muted-dim); margin-left: auto; }
 
+  /* second row of pills for difficulty, visually distinguished from category pills */
+  .blog-filters.difficulty-filters .filter-pill.active { background: rgba(126,231,135,0.08); }
+
   .blog-list-wrap{ max-width: 1120px; margin: 0 auto; padding: 36px 24px 100px; }
   .blog-empty{ color: var(--muted); font-size: 14px; padding: 40px 0; text-align: center; }
+
+  /* write-up list items get a couple of extra meta chips blog posts don't have */
+  .writeup-chip {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em;
+    padding: 2px 8px; border-radius: 999px; border: 1px solid var(--border, #2a2a2a);
+    color: var(--muted, #888); white-space: nowrap;
+  }
+  .writeup-chip.easy { color: #7ee787; border-color: #7ee787; }
+  .writeup-chip.medium { color: #e3c567; border-color: #e3c567; }
+  .writeup-chip.hard { color: #e38b67; border-color: #e38b67; }
+  .writeup-chip.insane { color: #e36767; border-color: #e36767; }
+  .blog-meta-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 </style>
 </head>
 <body>
@@ -94,26 +109,29 @@
 
 <main id="main">
   <div class="blog-hero">
-    <a href="index.html#blog" class="blog-back">&larr; back to home</a>
-    <div class="post-eyebrow" style="font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;">All Writing</div>
-    <h1 class="section-title">Every post, filterable by topic.</h1>
-    <p class="section-desc">Notes on backend engineering, networking, and cybersecurity — not just the highlights on the homepage.</p>
+    <a href="index.html#hero" class="blog-back">&larr; back to home</a>
+    <div class="post-eyebrow" style="font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;">CTF Write-ups</div>
+    <h1 class="section-title">Every solve, filterable by category and difficulty.</h1>
+    <p class="section-desc">Walkthroughs from CTFs and training platforms — web, pwn, crypto, reversing, and forensics challenges.</p>
   </div>
 
   <div class="blog-controls">
     <div class="blog-search">
-      <input id="blog-search" type="text" placeholder="search by title or topic&hellip;" autocomplete="off">
+      <input id="blog-search" type="text" placeholder="search by title or category&hellip;" autocomplete="off">
     </div>
-    <div class="blog-filters" id="blog-filters">
-      <!-- tag pills injected by script -->
+    <div class="blog-filters" id="category-filters">
+      <!-- category pills injected by script -->
+    </div>
+    <div class="blog-filters difficulty-filters" id="difficulty-filters">
+      <!-- difficulty pills injected by script -->
     </div>
   </div>
 
   <div class="blog-list-wrap">
-    <div class="blog-list" id="all-blog-list">
-      <!-- Rendered by inline script below from js/blog_data.js -->
+    <div class="blog-list" id="all-writeup-list">
+      <!-- Rendered by inline script below from js/writeup_data.js -->
     </div>
-    <div class="blog-empty" id="blog-empty" style="display:none;">No posts match that search/filter.</div>
+    <div class="blog-empty" id="blog-empty" style="display:none;">No write-ups match that search/filter.</div>
   </div>
 </main>
 
@@ -135,71 +153,83 @@
   </div>
 </footer>
 
-<script src="js/blog_data.js"></script>
-<script src="js/project_data.js"></script>
+<script src="js/writeup_data.js"></script>
 <script src="js/script.js"></script>
 <script>
   (function(){
-    const posts = window.blogPosts || {};
+    const posts = window.writeups || {};
 
-    // Same freshness rules as script.js: sort newest-first using
+    // Same freshness rules as the blog index: sort newest-first using
     // publishedAt (falls back to the display `date` field), and show the
-    // NEW badge only for 14 days after publishedAt. Kept as a separate copy
-    // here because this inline script runs in its own scope, not script.js's.
-    function parseBlogDate(post){
+    // NEW badge only for 14 days after publishedAt.
+    function parseDate(post){
       const iso = post.publishedAt ? Date.parse(post.publishedAt) : NaN;
       if(!isNaN(iso)) return iso;
       const fallback = Date.parse('1 ' + (post.date || ''));
       return isNaN(fallback) ? 0 : fallback;
     }
 
-    const TWO_WEEKS_MS = 7 * 24 * 60 * 60 * 1000;
-    function isRecentPost(post){
+    const ONE_WEEKS_MS = 7 * 24 * 60 * 60 * 1000;
+    function isRecent(post){
       if(!post.publishedAt) return false;
       const published = Date.parse(post.publishedAt);
-      return !isNaN(published) && (Date.now() - published) < TWO_WEEKS_MS;
+      return !isNaN(published) && (Date.now() - published) < ONE_WEEKS_MS;
     }
 
-    const order = (window.blogPostOrder || Object.keys(posts))
+    const order = (window.writeupOrder || Object.keys(posts))
       .slice()
-      .sort((a, b) => parseBlogDate(posts[b]) - parseBlogDate(posts[a]));
+      .sort((a, b) => parseDate(posts[b]) - parseDate(posts[a]));
 
-    const listEl = document.getElementById('all-blog-list');
+    const listEl = document.getElementById('all-writeup-list');
     const emptyMsg = document.getElementById('blog-empty');
-    const filtersEl = document.getElementById('blog-filters');
+    const categoryFiltersEl = document.getElementById('category-filters');
+    const difficultyFiltersEl = document.getElementById('difficulty-filters');
     const searchInput = document.getElementById('blog-search');
 
-    // Build the sorted, de-duped tag list across every post
-    const allTags = [...new Set(order.flatMap(key => posts[key].tags || []))].sort();
-    let activeTags = new Set();
+    // Categories and difficulties, both de-duped and sorted
+    const allCategories = [...new Set(order.map(key => posts[key].category).filter(Boolean))].sort();
+    const difficultyOrder = ["easy", "medium", "hard", "insane"];
+    const allDifficulties = difficultyOrder.filter(d =>
+      order.some(key => posts[key].difficulty === d)
+    );
+
+    let activeCategories = new Set();
+    let activeDifficulties = new Set();
     let searchTerm = '';
 
     function excerptOf(post){
-      // intro strings have soft-wrap whitespace baked in — collapse and trim
       const clean = (post.intro || '').replace(/\s+/g, ' ').trim();
       return clean.length > 140 ? clean.slice(0, 140).trim() + '\u2026' : clean;
     }
 
     function itemHTML(key){
       const p = posts[key];
-      const isNew = isRecentPost(p);
+      const isNew = isRecent(p);
+      const metaBits = [p.date, p.read].filter(Boolean).join(' &middot; ');
       return `
-        <a href="blog-post.html?post=${key}" class="blog-item">
+        <a href="writeup-post.html?writeup=${key}" class="blog-item">
           <div class="blog-main">
             <div class="blog-title">${p.title}${isNew ? ' <span class="new-badge">NEW</span>' : ''}</div>
             <div class="blog-excerpt">${excerptOf(p)}</div>
+            <div class="blog-meta-row">
+              ${p.category ? `<span class="writeup-chip">${p.category}</span>` : ''}
+              ${p.difficulty ? `<span class="writeup-chip ${p.difficulty}">${p.difficulty}</span>` : ''}
+              ${p.platform ? `<span class="writeup-chip">${p.platform}</span>` : ''}
+              ${p.points != null ? `<span class="writeup-chip">${p.points} pts</span>` : ''}
+            </div>
           </div>
-          <span class="blog-meta">${p.date} &middot; ${p.read}</span>
+          <span class="blog-meta">${metaBits}</span>
           <span class="blog-arrow">&rarr;</span>
         </a>`;
     }
 
     function matches(key){
       const p = posts[key];
-      const inTags = activeTags.size === 0 || (p.tags || []).some(t => activeTags.has(t));
-      const haystack = (p.title + ' ' + (p.intro || '')).toLowerCase();
+      const inCategory = activeCategories.size === 0 || activeCategories.has(p.category);
+      const inDifficulty = activeDifficulties.size === 0 || activeDifficulties.has(p.difficulty);
+      const haystack = (p.title + ' ' + (p.intro || '') + ' ' + (p.category || '') + ' ' + (p.platform || '')).toLowerCase();
       const inSearch = !searchTerm || haystack.includes(searchTerm);
-      return inTags && inSearch;
+      return inCategory && inDifficulty && inSearch;
     }
 
     function render(){
@@ -208,32 +238,56 @@
       emptyMsg.style.display = visible.length ? 'none' : 'block';
     }
 
-    function renderFilters(){
-      const pillsHTML = allTags.map(tag => `<button type="button" class="filter-pill" data-tag="${tag}">${tag}</button>`).join('');
-      filtersEl.innerHTML = `
-        <button type="button" class="filter-pill" data-tag="__all">all</button>
+    function renderCategoryFilters(){
+      const pillsHTML = allCategories.map(cat => `<button type="button" class="filter-pill" data-cat="${cat}">${cat}</button>`).join('');
+      categoryFiltersEl.innerHTML = `
+        <button type="button" class="filter-pill" data-cat="__all">all categories</button>
         ${pillsHTML}
         <span class="filter-count" id="filter-count"></span>`;
-      filtersEl.querySelectorAll('.filter-pill').forEach(btn => {
+      categoryFiltersEl.querySelectorAll('.filter-pill').forEach(btn => {
         btn.addEventListener('click', () => {
-          const tag = btn.dataset.tag;
-          if(tag === '__all'){
-            activeTags.clear();
+          const cat = btn.dataset.cat;
+          if(cat === '__all'){
+            activeCategories.clear();
           } else {
-            if(activeTags.has(tag)) activeTags.delete(tag);
-            else activeTags.add(tag);
+            if(activeCategories.has(cat)) activeCategories.delete(cat);
+            else activeCategories.add(cat);
           }
           updatePillStates();
           render();
         });
       });
-      updatePillStates();
+    }
+
+    function renderDifficultyFilters(){
+      const pillsHTML = allDifficulties.map(d => `<button type="button" class="filter-pill" data-diff="${d}">${d}</button>`).join('');
+      difficultyFiltersEl.innerHTML = `
+        <button type="button" class="filter-pill" data-diff="__all">all difficulties</button>
+        ${pillsHTML}`;
+      difficultyFiltersEl.querySelectorAll('.filter-pill').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const d = btn.dataset.diff;
+          if(d === '__all'){
+            activeDifficulties.clear();
+          } else {
+            if(activeDifficulties.has(d)) activeDifficulties.delete(d);
+            else activeDifficulties.add(d);
+          }
+          updatePillStates();
+          render();
+        });
+      });
     }
 
     function updatePillStates(){
-      filtersEl.querySelectorAll('.filter-pill').forEach(btn => {
-        const tag = btn.dataset.tag;
-        const isActive = tag === '__all' ? activeTags.size === 0 : activeTags.has(tag);
+      categoryFiltersEl.querySelectorAll('.filter-pill').forEach(btn => {
+        const cat = btn.dataset.cat;
+        const isActive = cat === '__all' ? activeCategories.size === 0 : activeCategories.has(cat);
+        btn.classList.toggle('active', isActive);
+      });
+      difficultyFiltersEl.querySelectorAll('.filter-pill').forEach(btn => {
+        const d = btn.dataset.diff;
+        const isActive = d === '__all' ? activeDifficulties.size === 0 : activeDifficulties.has(d);
         btn.classList.toggle('active', isActive);
       });
       const count = document.getElementById('filter-count');
@@ -246,7 +300,9 @@
       render();
     });
 
-    renderFilters();
+    renderCategoryFilters();
+    renderDifficultyFilters();
+    updatePillStates();
     render();
   })();
 </script>

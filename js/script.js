@@ -27,8 +27,8 @@
   }));
 
   // ---------- Active nav on scroll ----------
-  const sections = ['about','achievements','projects','blog','skills','experience','contact'];
-  const navLinks = document.querySelectorAll('.main-nav .nav-link');
+  const sections = ['about','education','achievements','projects','blog','writeups','skills','experience','contact'];
+  const navLinks = document.querySelectorAll('.nav-link[data-section]');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if(entry.isIntersecting){
@@ -126,15 +126,15 @@
     return !isNaN(published) && (Date.now() - published) < TWO_WEEKS_MS;
   }
 
+  function excerptOf(post){
+    // intro strings have soft-wrap whitespace baked in — collapse and trim
+    const clean = (post.intro || '').replace(/\s+/g, ' ').trim();
+    return clean.length > 140 ? clean.slice(0, 140).trim() + '\u2026' : clean;
+  }
+
   // ---------- Homepage blog list ----------
   const blogListEl = document.getElementById('blog-list');
   if(blogListEl && window.blogPosts){
-    function excerptOf(post){
-      // intro strings have soft-wrap whitespace baked in — collapse and trim
-      const clean = (post.intro || '').replace(/\s+/g, ' ').trim();
-      return clean.length > 140 ? clean.slice(0, 140).trim() + '\u2026' : clean;
-    }
-
     const order = (window.blogPostOrder || Object.keys(window.blogPosts))
       .slice()
       .sort((a, b) => parseBlogDate(window.blogPosts[b]) - parseBlogDate(window.blogPosts[a]));
@@ -157,6 +157,34 @@
     }).join('');
     // newly-injected .reveal items need to be observed for the scroll-in animation
     blogListEl.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+  }
+
+  // ---------- Homepage write-ups list ----------
+  // Mirrors the blog list above exactly, but reads from js/writeup_data.js
+  // (window.writeups / window.writeupOrder) and links into writeup-post.html.
+  const writeupListEl = document.getElementById('writeup-list');
+  if(writeupListEl && window.writeups){
+    const order = (window.writeupOrder || Object.keys(window.writeups))
+      .slice()
+      .sort((a, b) => parseBlogDate(window.writeups[b]) - parseBlogDate(window.writeups[a]));
+
+    const HOMEPAGE_WRITEUP_COUNT = 3;
+    const recent = order.slice(0, HOMEPAGE_WRITEUP_COUNT);
+
+    writeupListEl.innerHTML = recent.map(key => {
+      const p = window.writeups[key];
+      const isNew = isRecentPost(p);
+      return `
+        <a href="writeup-post.html?writeup=${key}" class="blog-item reveal">
+          <div class="blog-main">
+            <div class="blog-title">${p.title}${isNew ? ' <span class="new-badge">NEW</span>' : ''}</div>
+            <div class="blog-excerpt">${excerptOf(p)}</div>
+          </div>
+          <span class="blog-meta">${p.date} &middot; ${p.read}</span>
+          <span class="blog-arrow">&rarr;</span>
+        </a>`;
+    }).join('');
+    writeupListEl.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
   }
 
   // ---------- Terminal ----------

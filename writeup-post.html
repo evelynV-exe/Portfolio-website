@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title id="page-title">evelyn@post</title>
+<title id="page-title">evelyn@writeup</title>
 <meta id="page-description" name="description" content="">
 <script>
   (function(){
@@ -19,7 +19,7 @@
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 <style>
-  /* ---- Article-specific styles (not in style.css) ---- */
+  /* ---- Write-up-specific styles (not in style.css) ---- */
   .post-hero { max-width: 780px; margin: 0 auto; padding: 150px 24px 40px; }
   .post-back {
     display: inline-flex; align-items: center; gap: 6px;
@@ -31,7 +31,15 @@
     color: var(--accent, #7ee787); margin-bottom: 12px;
   }
   .post-title { font-size: clamp(28px, 4vw, 42px); line-height: 1.15; margin: 0 0 16px; }
-  .post-meta { display: flex; gap: 14px; flex-wrap: wrap; color: var(--muted, #888); font-size: 13px; }
+  .post-meta { display: flex; gap: 14px; flex-wrap: wrap; color: var(--muted, #888); font-size: 13px; align-items: center; }
+  .difficulty-badge {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em;
+    padding: 3px 9px; border-radius: 999px; border: 1px solid var(--border, #2a2a2a);
+  }
+  .difficulty-badge.easy { color: #7ee787; border-color: #7ee787; }
+  .difficulty-badge.medium { color: #e3c567; border-color: #e3c567; }
+  .difficulty-badge.hard { color: #e38b67; border-color: #e38b67; }
+  .difficulty-badge.insane { color: #e36767; border-color: #e36767; }
   .post-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
   .post-tags .tag {
     font-size: 11px; padding: 3px 9px; border: 1px solid var(--border, #2a2a2a);
@@ -161,23 +169,23 @@
   </div>
 </footer>
 
-<script src="js/blog_data.js"></script>
+<script src="js/writeup_data.js"></script>
 <script src="js/script.js"></script>
 <script>
   (async function(){
     const params = new URLSearchParams(window.location.search);
-    const slug = params.get('post');
-    const post = slug && window.blogPosts ? window.blogPosts[slug] : null;
+    const slug = params.get('writeup');
+    const post = slug && window.writeups ? window.writeups[slug] : null;
     const root = document.getElementById('post-root');
 
     if(!post){
       root.innerHTML = `
         <div class="post-not-found">
-          <h1 class="post-title">Post not found</h1>
+          <h1 class="post-title">Write-up not found</h1>
           <p style="color:var(--muted,#888);margin:16px 0 28px;">
-            No post matches "${slug || ''}". It may have been moved or the link is out of date.
+            No write-up matches "${slug || ''}". It may have been moved or the link is out of date.
           </p>
-          <a href="index.html#blog" class="post-back">&larr; back to blog</a>
+          <a href="writeups.html" class="post-back">&larr; back to write-ups</a>
         </div>`;
       return;
     }
@@ -210,7 +218,7 @@
     }
 
     // Optional per-section code block: sections can include `code` (the snippet)
-    // and `lang` (a short label like "python" or "pseudocode") to render a
+    // and `lang` (a short label like "python" or "bash") to render a
     // terminal-style block with a copy button beneath the section's prose.
     function codeBlockHTML(s){
       if(!s.code) return '';
@@ -239,7 +247,7 @@
         }
 
         return `
-            <h2>${s.heading ? `<h3>${s.heading}</h3>` : ''}</h2>
+            ${s.heading ? `<h2>${s.heading}</h2>` : ''}
             <p>${s.body}</p>
             ${
                 code
@@ -253,22 +261,33 @@
     })
 );
 
-const html = sectionsHTML.join('');
-
-    // prev/next based on shared ordering in blog-data.js
-    const order = window.blogPostOrder || Object.keys(window.blogPosts);
+    // prev/next based on shared ordering in writeup_data.js
+    const order = window.writeupOrder || Object.keys(window.writeups);
     const idx = order.indexOf(slug);
     const prevSlug = idx > 0 ? order[idx - 1] : null;
     const nextSlug = idx >= 0 && idx < order.length - 1 ? order[idx + 1] : null;
 
+    const metaBits = [
+      post.date,
+      post.read + ' read',
+      post.platform || null,
+      post.points != null ? post.points + ' pts' : null
+    ].filter(Boolean);
+
+    const metaHTML = metaBits
+      .map(bit => `<span>${bit}</span>`)
+      .join('<span>&middot;</span>');
+
+    const difficultyHTML = post.difficulty
+      ? `<span class="difficulty-badge ${post.difficulty}">${post.difficulty}</span>`
+      : '';
+
     root.innerHTML = `
       <div class="post-hero">
-        <a href="index.html#blog" class="post-back">&larr; back to blog</a>
-        <div class="post-eyebrow">Engineering Notes</div>
+        <a href="writeups.html" class="post-back">&larr; back to write-ups</a>
+        <div class="post-eyebrow">${post.category ? post.category + ' &middot; ' : ''}CTF Write-up</div>
         <h1 class="post-title">${post.title}</h1>
-        <div class="post-meta">
-          <span>${post.date}</span><span>&middot;</span><span>${post.read} read</span><span>&middot;</span><span>by Evelyn</span>
-        </div>
+        <div class="post-meta">${metaHTML}${difficultyHTML ? `<span>&middot;</span>${difficultyHTML}` : ''}</div>
         <div class="post-tags">${tagsHTML}</div>
       </div>
 
@@ -279,17 +298,17 @@ const html = sectionsHTML.join('');
 
       <div class="post-outro">${post.outro}</div>
 
-      <nav class="post-nav" aria-label="Post navigation">
+      <nav class="post-nav" aria-label="Write-up navigation">
         ${prevSlug
-          ? `<a href="blog-post.html?post=${prevSlug}" class="prev"><span class="nav-label">&larr; previous</span>${window.blogPosts[prevSlug].title}</a>`
+          ? `<a href="writeup-post.html?writeup=${prevSlug}" class="prev"><span class="nav-label">&larr; previous</span>${window.writeups[prevSlug].title}</a>`
           : `<span class="spacer"></span>`}
         ${nextSlug
-          ? `<a href="blog-post.html?post=${nextSlug}" class="next"><span class="nav-label">next &rarr;</span>${window.blogPosts[nextSlug].title}</a>`
+          ? `<a href="writeup-post.html?writeup=${nextSlug}" class="next"><span class="nav-label">next &rarr;</span>${window.writeups[nextSlug].title}</a>`
           : `<span class="spacer"></span>`}
       </nav>
     `;
 
-    // Copy-to-clipboard for any code blocks in this post
+    // Copy-to-clipboard for any code blocks in this write-up
     root.querySelectorAll('.code-block-copy').forEach(btn => {
       btn.addEventListener('click', () => {
         const code = btn.closest('.code-block').querySelector('code').textContent;
