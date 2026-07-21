@@ -169,11 +169,11 @@
       return isNaN(fallback) ? 0 : fallback;
     }
 
-    const ONE_WEEKS_MS = 7 * 24 * 60 * 60 * 1000;
+    const TIME = 7 * 24 * 60 * 60 * 1000;
     function isRecent(post){
       if(!post.publishedAt) return false;
       const published = Date.parse(post.publishedAt);
-      return !isNaN(published) && (Date.now() - published) < ONE_WEEKS_MS;
+      return !isNaN(published) && (Date.now() - published) < TIME;
     }
 
     const order = (window.writeupOrder || Object.keys(posts))

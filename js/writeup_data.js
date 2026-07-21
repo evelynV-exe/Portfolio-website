@@ -16,59 +16,139 @@
 // from disk) to render a terminal-style code block.
 
 window.writeups = {
-  "baby-heap-overflow": {
-    title: "Baby Heap Overflow — pwn, 250pts",
-    intro: "A guided walk through a classic tcache poisoning bug in a menu-driven \
-            heap challenge, from spotting the off-by-one to landing a shell.",
-    date: "Jul 14, 2026",
-    read: "9 min",
-    tags: ["pwn", "heap", "ctf"],
-    category: "pwn",
+  "basic-mod1": {
+    title: "basic-mod1 — cryptography, medium",
+    intro: "A simple modular arithmetic cipher where each number is reduced \
+            modulo 37 and mapped to a custom character set to recover the flag.",
+    date: "Jul 21, 2026",
+    read: "4 min",
+    tags: ["cryptography", "modular arithmetic", "ctf"],
+    category: "cryptography",
     difficulty: "medium",
-    platform: "DownUnderCTF",
-    points: 250,
-    publishedAt: "2026-07-14",
+    platform: "picoCTF",
+    points: 100,
+    publishedAt: "2026-07-21",
     sections: [
       {
-        heading: "Recon",
-        body: "The binary is a menu-driven allocator: add, edit, delete, view. \
-               Checking protections first — partial RELRO, no canary, PIE on, \
-               NX on. No canary plus a heap bug is usually the fast path to a shell.",
-        code: "checksec ./baby_heap\n[*] '/ctf/baby_heap'\n    Arch:     amd64-64-little\n    RELRO:    Partial RELRO\n    Stack:    No canary found\n    NX:       NX enabled\n    PIE:      PIE enabled",
-        lang: "bash"
+        heading: "Problem",
+        body: "Take each number mod 41 and find the modular inverse for the result. \
+                Then map to the following character set: 1-26 are the alphabet, \
+                27-36 are the decimal digits, and 37 is an underscore. Wrap your decrypted \
+                message in the picoCTF flag format (i.e. picoCTF{decrypted_message})"
       },
       {
-        heading: "Finding the bug",
-        body: "The edit function trusts a user-supplied size field without \
-               re-checking it against the original allocation size, letting us \
-               write one byte past the end of a chunk and corrupt the next \
-               chunk's size field.",
-        code: "void edit(int idx, char *buf, size_t len) {\n    // BUG: len is never checked against chunk_size[idx]\n    memcpy(chunks[idx], buf, len);\n}",
-        lang: "c"
+        heading: "Analyzing the message",
+        body: "The message is a sequence of numbers. Since each number must be reduced \
+              modulo 37, the first step is to read the values and convert them into \
+              indexes ranging from 0 to 36.",
+        code: "165 248 94 346 299 73 198 221 313 137 205 87 336 110 186 69 223 213 216 216 177 138",
+        lang: "text"
       },
       {
-        heading: "Exploit plan",
-        body: "Corrupt the size field of a freed chunk to merge it with its \
-               neighbor, then leverage the resulting overlapping chunk to leak a \
-               heap pointer and defeat ASLR before poisoning tcache to get an \
-               arbitrary write."
+        heading: "Character mapping",
+        body: "The character set contains 37 characters. The index of each character \
+              corresponds directly to the result of the modulo operation.",
+        code: "SET = \"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_\"\n\n// 0  -> A\n// 1  -> B\n// ...\n// 25 -> Z\n// 26 -> 0\n// ...\n// 35 -> 9\n// 36 -> _",
+        lang: "python"
+      },
+      {
+        heading: "Decryption script",
+        body: "I wrote a small Python script that reads each number, calculates its \
+              remainder modulo 37, and uses the result as an index into the character set.",
+        code: "SET = \"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_\"\n\nwith open(\"message.txt\", \"r\") as f:\n    content = f.read().split()\n\narr = [int(n) % 37 for n in content]\nstring = \"\".join(SET[v] for v in arr)\n\nprint(f\"picoCTF{{{string}}}\")",
+        lang: "python"
       },
       {
         heading: "Getting the flag",
-        body: "With an arbitrary write primitive, overwriting a GOT entry with \
-               the address of system and shaping a chunk's contents into \
-               \"/bin/sh\" is enough to pop a shell.",
-        code: "python3 exploit.py\n[+] Leaked heap base: 0x55a3c1b0e000\n[+] Overwrote free@got with system\n$ cat flag.txt\nDUCTF{h34p_g0lf_1s_4lw4ys_w0rth_1t}",
-        lang: "bash"
+        body: "After applying the modulo operation and mapping each result to the \
+              corresponding character, the decrypted message was:",
+        code: "picoCTF{R0UND_N_R0UND_B6B25531}",
+        lang: "text"
       }
     ],
-    outro: "Off-by-one heap bugs punch well above their weight. Worth building a \
-            small tcache-poisoning template you can reuse across challenges \
-            instead of re-deriving the primitive every time."
+    outro: "This challenge demonstrates how modular arithmetic can be used as a simple \
+            character encoding scheme. Once the character set and modulo value were \
+            provided, the solution was simply a matter of converting each number into \
+            an index and reconstructing the message."
+  },
+  "basic-mod2": {
+    title: "basic-mod2 — cryptography, medium",
+    intro: "A modular arithmetic challenge that uses modular inverses to decode \
+            a sequence of numbers into a custom character set and recover the flag.",
+    date: "Jul 21, 2026",
+    read: "5 min",
+    tags: ["cryptography", "modular arithmetic", "modular inverse", "ctf"],
+    category: "cryptography",
+    difficulty: "medium",
+    platform: "picoCTF",
+    points: 100,
+    publishedAt: "2026-07-21",
+    sections: [
+      {
+        heading: "Problem",
+        body: "The challenge provides a sequence of numbers and a decryption scheme. \
+              Each number must first be used to calculate its modular inverse modulo 41. \
+              The resulting values are then mapped to a character set where values 1 \
+              through 26 represent uppercase letters, values 27 through 36 represent \
+              decimal digits, and 37 represents an underscore. The final message is \
+              wrapped in the picoCTF flag format."
+      },
+      {
+        heading: "Analyzing the message",
+        body: "The message consists of a sequence of numbers. Since the challenge \
+              specifies modular inverses modulo 41, each number can be processed using \
+              the modular inverse operation.",
+        code: "268 413 438 313 426 337 272 188 392 338 77 332 139 113 92 239 247 120 419 72 295 190 131",
+        lang: "text"
+      },
+      {
+        heading: "Character mapping",
+        body: "The character set uses one-based indexing. Values 1 through 26 map to \
+              uppercase letters, values 27 through 36 map to digits, and value 37 \
+              maps to an underscore.",
+        code: "SET = \"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_\"\n\n// 1  -> A\n// 2  -> B\n// ...\n// 26 -> Z\n// 27 -> 0\n// ...\n// 36 -> 9\n// 37 -> _",
+        lang: "python"
+      },
+      {
+        heading: "Calculating the modular inverse",
+        body: "The modular inverse of each number is calculated modulo 41. Python's \
+              pow() function supports modular inverses when the exponent is -1, so \
+              pow(n, -1, 41) returns the value x such that (n * x) % 41 == 1.",
+        code: "arr = [pow(int(n), -1, 41) for n in content]",
+        lang: "python"
+      },
+      {
+        heading: "Decryption script",
+        body: "After calculating the modular inverse, each result is converted to a \
+              zero-based index using (n - 1) % 37. This allows the one-based mapping \
+              from the challenge to be used with Python's zero-based string indexing.",
+        code: "SET = \"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_\"\n\nwith open(\"message.txt\", \"r\") as f:\n    content = f.read().split()\n\narr = [pow(int(n), -1, 41) for n in content]\n\ndecode = ''.join(SET[(n - 1) % 37] for n in arr)\n\nprint(f\"picoCTF{{{decode}}}\")",
+        lang: "python"
+      },
+      {
+        heading: "Modular inverse results",
+        body: "After calculating the modular inverse of every number modulo 41, the \
+              resulting values were:",
+        code: "[28, 14, 22, 30, 18, 32, 30, 12, 25, 37, 8, 31, 18, 4, 37, 35, 1, 27, 32, 4, 36, 30, 36]",
+        lang: "text"
+      },
+      {
+        heading: "Getting the flag",
+        body: "The inverse values were then mapped to the custom character set using \
+              one-based indexing. The resulting decrypted message was:",
+        code: "picoCTF{1NV3R53LY_H4RD_8A05D939}",
+        lang: "text"
+      }
+    ],
+    outro: "This challenge demonstrates modular inverses as a cryptographic decoding \
+            technique. The key detail is the difference between one-based character \
+            mapping and Python's zero-based string indexing, which is handled by \
+            subtracting one from each inverse before indexing the character set."
   },
 
 };
 
 window.writeupOrder = [
-  "baby-heap-overflow",
+  "basic-mod1",
+  "basic-mod2",
 ];
