@@ -1,4 +1,5 @@
 (function(){
+  const TWO_WEEKS_MS = 7 * 24 * 60 * 60 * 1000;
   // ---------- Theme toggle ----------
   const themeToggle = document.getElementById('theme-toggle');
   if(themeToggle){
@@ -61,12 +62,23 @@
   // ---------- Homepage featured achievements grid ----------
   const achievementsGridEl = document.getElementById('achievements-grid');
 
+  // Achievement dates are ISO strings (e.g. "2026-08-21"), so recency can be
+  // checked directly — no publishedAt/date fallback needed like blog posts.
+  function isRecentAchievement(a){
+    if(!a.date) return false;
+    const added = Date.parse(a.date);
+    return !isNaN(added) && (Date.now() - added) < TWO_WEEKS_MS;
+  }
+
   if(achievementsGridEl && window.achievements){
-    const order = window.achievementOrder || Object.keys(window.achievements);
-    const HOMEPAGE_ACHIEVEMENT_COUNT = 4;
+    const order = (window.achievementOrder || Object.keys(window.achievements))
+      .slice()
+      .sort((a, b) => (Date.parse(window.achievements[b].date) || 0) - (Date.parse(window.achievements[a].date) || 0));
+    const HOMEPAGE_ACHIEVEMENT_COUNT = 3;
     const featured = order.filter(key => window.achievements[key].featured).slice(0, HOMEPAGE_ACHIEVEMENT_COUNT);
     achievementsGridEl.innerHTML = featured.map(key => {
       const a = window.achievements[key];
+      const isNew = isRecentAchievement(a);
       const imageHTML = a.image ? `<img src="${a.image}" alt="${a.title} certificate" class="achievement-image" loading="lazy">` : '';
       const tags = (a.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
       const linkHTML = a.link ? `<a href="${a.link}" target="_blank" rel="noopener" class="achievement-link">view &rarr;</a>` : '';
@@ -77,7 +89,7 @@
             <span class="achievement-icon">${a.icon || '🏅'}</span>
             <span class="achievement-date">${a.date || ''}</span>
           </div>
-          <h3>${a.title}</h3>
+          <h3>${a.title}${isNew ? ' <span class="new-badge">NEW</span>' : ''}</h3>
           <span class="achievement-category">${a.category || ''}</span>
           <p>${a.description || ''}</p>
           <div class="achievement-tag-row">${tags}</div>
@@ -125,7 +137,6 @@
     return isNaN(fallback) ? 0 : fallback;
   }
 
-  const TWO_WEEKS_MS = 7 * 24 * 60 * 60 * 1000;
   function isRecentPost(post){
     if(!post.publishedAt) return false; // no exact date = can't confirm it's within 14 days
     const published = Date.parse(post.publishedAt);

@@ -63,6 +63,15 @@ window.achievements = {
     link: "",
     featured: true
   },
+  'cyber-bootcamp-2026': { 
+    title: "Completed Cybersecurity Boot Camp", 
+    date: "2026-08-21", 
+    category: "CyberSecurity", 
+    description: "Successfully completed the Cybersecurity Boot Camp 2026 program at Rajamangala University of Technology Lanna, fulfilling all requirements of the program.", 
+    tags: ["Cybersecurity", "Cyber Boot Camp", "Academic"], 
+    image: "img/cert/cyber-boot-camp.jpg", 
+    link: "", 
+    featured: true },
 };
 
 window.achievementOrder = [
@@ -70,4 +79,5 @@ window.achievementOrder = [
   "road-to-ctf-beginning",
   "basic-cybersecurity",
   "rmutl-python-competition",
+  "cyber-bootcamp-2026",
 ];

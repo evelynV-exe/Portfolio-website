@@ -145,11 +145,22 @@
 <script>
   (function(){
     const items = window.achievements || {};
-    const order = window.achievementOrder || Object.keys(items);
+    const order = (window.achievementOrder || Object.keys(items))
+      .slice()
+      .sort((a, b) => (Date.parse(items[b].date) || 0) - (Date.parse(items[a].date) || 0));
     const grid = document.getElementById('all-achievements-grid');
     const emptyMsg = document.getElementById('achievements-empty');
     const filtersEl = document.getElementById('achievements-filters');
     const searchInput = document.getElementById('achievements-search');
+
+    // Same freshness rule as blog.html: show a NEW badge for 7 days
+    // after `date` (an ISO string, e.g. "2026-08-21").
+    const TIME = 7 * 24 * 60 * 60 * 1000;
+    function isRecentAchievement(a){
+      if(!a.date) return false;
+      const added = Date.parse(a.date);
+      return !isNaN(added) && (Date.now() - added) < TIME;
+    }
 
     // Build the sorted, de-duped category list across every achievement
     const allCategories = [...new Set(order.map(key => items[key].category).filter(Boolean))].sort();
@@ -158,6 +169,7 @@
 
     function cardHTML(key){
       const a = items[key];
+      const isNew = isRecentAchievement(a);
       const tags = (a.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
       const linkHTML = a.link
         ? `<a href="${a.link}" target="_blank" rel="noopener" class="achievement-link">view &rarr;</a>`
@@ -172,7 +184,7 @@
             <span class="achievement-icon">${a.icon || '🏅'}</span>
             <span class="achievement-date">${a.date || ''}</span>
           </div>
-          <h3>${a.title}</h3>
+          <h3>${a.title}${isNew ? ' <span class="new-badge">NEW</span>' : ''}</h3>
           <span class="achievement-category">${a.category || ''}</span>
           <p>${a.description || ''}</p>
           <div class="achievement-tag-row">${tags}</div>

@@ -25,7 +25,7 @@
     display: inline-flex; align-items: center; gap: 6px;
     color: var(--muted, #888); text-decoration: none; font-size: 13px; margin-bottom: 28px;
   }
-  .post-back:hover { color: var(--fg, #eaeaea); }
+  .post-back:hover { color: var(--text); }
   .post-eyebrow {
     font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase;
     color: var(--accent, #7ee787); margin-bottom: 12px;
@@ -39,12 +39,13 @@
   }
   .post-body {
     max-width: 780px; margin: 0 auto; padding: 0 24px 60px;
-    font-size: 15.5px; line-height: 1.75; color: var(--fg, #e4e4e4);
+    font-size: 15.5px; line-height: 1.75; color: var(--text);
   }
   .post-body p { margin: 0 0 22px; }
   .post-body h2 {
     font-size: 20px; margin: 40px 0 16px; padding-top: 8px;
     border-top: 1px solid var(--border, #2a2a2a);
+    color: var(--accent);
   }
   .post-body code {
     font-family: 'JetBrains Mono', monospace; background: var(--code-bg, #161616);
@@ -65,7 +66,7 @@
     font-family: inherit; font-size: 11px; padding: 4px 9px; border-radius: 5px; cursor: pointer;
     transition: border-color 0.15s ease, color 0.15s ease;
   }
-  .code-block-copy:hover { border-color: var(--accent, #7ee787); color: var(--text, #eaeaea); }
+  .code-block-copy:hover { border-color: var(--accent, #7ee787); color: var(--text); }
   .code-block pre {
     margin: 0; padding: 20px; overflow-x: auto; overflow-y: hidden;
   }
@@ -87,7 +88,7 @@
     padding: 14px 16px; border: 1px solid var(--border, #2a2a2a); border-radius: 8px;
     transition: border-color 0.15s ease, color 0.15s ease;
   }
-  .post-nav a:hover { border-color: var(--accent, #7ee787); color: var(--fg, #eaeaea); }
+  .post-nav a:hover { border-color: var(--accent, #7ee787); color: var(--text); }
   .post-nav .next { text-align: right; }
   .post-nav .nav-label {
     display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;
@@ -239,7 +240,7 @@
         }
 
         return `
-            <h2>${s.heading ? `<h3>${s.heading}</h3>` : ''}</h2>
+            ${s.heading ? `<h2>${s.heading}</h2>` : ''}
             <p>${s.body}</p>
             ${
                 code
