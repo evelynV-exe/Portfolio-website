@@ -3,112 +3,64 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title id="page-title">evelyn@writeup</title>
-<meta id="page-description" name="description" content="">
-<script>
-  (function(){
-    try{
-      if(localStorage.getItem('theme') === 'light'){
-        document.documentElement.setAttribute('data-theme','light');
-      }
-    }catch(e){}
-  })();
-</script>
+<title>evelyn@writeups</title>
+<meta name="description" content="CTF write-ups — filter by category or difficulty.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 <style>
-  /* ---- Write-up-specific styles (not in style.css) ---- */
-  .post-hero { max-width: 780px; margin: 0 auto; padding: 150px 24px 40px; }
-  .post-back {
+  /* ---- Write-up-index-specific styles (not in style.css) ---- */
+  .blog-hero { max-width: 1120px; margin: 0 auto; padding: 150px 24px 0; }
+  .blog-back {
     display: inline-flex; align-items: center; gap: 6px;
-    color: var(--muted, #888); text-decoration: none; font-size: 13px; margin-bottom: 28px;
+    color: var(--muted); text-decoration: none; font-size: 13px; margin-bottom: 28px;
   }
-  .post-back:hover { color: var(--text); }
-  .post-eyebrow {
-    font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase;
-    color: var(--accent, #7ee787); margin-bottom: 12px;
+  .blog-back:hover { color: var(--text); }
+
+  .blog-controls {
+    max-width: 1120px; margin: 40px auto 0; padding: 0 24px;
+    display: flex; flex-direction: column; gap: 18px;
   }
-  .post-title { font-size: clamp(28px, 4vw, 42px); line-height: 1.15; margin: 0 0 16px; }
-  .post-meta { display: flex; gap: 14px; flex-wrap: wrap; color: var(--muted, #888); font-size: 13px; align-items: center; }
-  .difficulty-badge {
+  .blog-search input{
+    width: 100%; max-width: 360px;
+    background: var(--bg-raised); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 11px 14px; color: var(--text);
+    font-family: inherit; font-size: 13.5px;
+  }
+  .blog-search input:focus{ border-color: var(--accent); outline: none; }
+  .blog-filters{ display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .filter-pill{
+    font-size: 12.5px; padding: 7px 13px; border-radius: 999px;
+    border: 1px solid var(--border-hover); color: var(--muted);
+    background: transparent; cursor: pointer; font-family: inherit;
+    transition: border-color 180ms var(--ease), color 180ms var(--ease), background 180ms var(--ease);
+  }
+  .filter-pill:hover{ border-color: var(--accent); color: var(--text); }
+  .filter-pill.active{ border-color: var(--accent); color: var(--accent); background: rgba(44,255,5,0.08); }
+  .filter-count{ font-size: 12px; color: var(--muted-dim); margin-left: auto; }
+
+  /* second row of pills for difficulty, visually distinguished from category pills */
+  .blog-filters.difficulty-filters .filter-pill.active { background: rgba(126,231,135,0.08); }
+
+  .blog-list-wrap{ max-width: 1120px; margin: 0 auto; padding: 36px 24px 100px; }
+  .blog-empty{ color: var(--muted); font-size: 14px; padding: 40px 0; text-align: center; }
+
+  /* write-up list items get a couple of extra meta chips blog posts don't have */
+  .writeup-chip {
     font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em;
-    padding: 3px 9px; border-radius: 999px; border: 1px solid var(--border, #2a2a2a);
+    padding: 2px 8px; border-radius: 999px; border: 1px solid var(--border, #2a2a2a);
+    color: var(--muted, #888); white-space: nowrap;
   }
-  .difficulty-badge.easy { color: #7ee787; border-color: #7ee787; }
-  .difficulty-badge.medium { color: #e3c567; border-color: #e3c567; }
-  .difficulty-badge.hard { color: #e38b67; border-color: #e38b67; }
-  .difficulty-badge.insane { color: #e36767; border-color: #e36767; }
-  .post-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
-  .post-tags .tag {
-    font-size: 11px; padding: 3px 9px; border: 1px solid var(--border, #2a2a2a);
-    border-radius: 999px; color: var(--muted, #888);
-  }
-  .post-body {
-    max-width: 780px; margin: 0 auto; padding: 0 24px 60px;
-    font-size: 15.5px; line-height: 1.75; color: var(--text);
-  }
-  .post-body p { margin: 0 0 22px; }
-  .post-body h2 {
-    font-size: 20px; margin: 40px 0 16px; padding-top: 8px;
-    border-top: 1px solid var(--border, #2a2a2a);
-    color: var(--accent);
-  }
-  .post-body code {
-    font-family: 'JetBrains Mono', monospace; background: var(--code-bg, #161616);
-    border: 1px solid var(--border, #2a2a2a); border-radius: 4px; padding: 2px 6px; font-size: 13.5px;
-  }
-  .code-block {
-    margin: 0 0 28px; border: 1px solid var(--border, #2a2a2a); border-radius: var(--radius, 10px);
-    background: var(--terminal-bg, #0d0d0d); overflow: hidden;
-  }
-  .code-block-head {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 9px 14px; border-bottom: 1px solid var(--border, #2a2a2a);
-    font-size: 11.5px; letter-spacing: 0.04em; text-transform: uppercase;
-    color: var(--muted, #888);
-  }
-  .code-block-copy {
-    background: transparent; border: 1px solid var(--border-hover, #333); color: var(--muted, #888);
-    font-family: inherit; font-size: 11px; padding: 4px 9px; border-radius: 5px; cursor: pointer;
-    transition: border-color 0.15s ease, color 0.15s ease;
-  }
-  .code-block-copy:hover { border-color: var(--accent, #7ee787); color: var(--text, #eaeaea); }
-  .code-block pre {
-    margin: 0; padding: 20px; overflow-x: auto; overflow-y: hidden;
-  }
-  .code-block pre code {
-    display: block; background: none; border: none; padding: 0; font-size: 13px; line-height: 1.65;
-    color: var(--text, #eaeaea); white-space: pre; tab-size: 4;
-  }
-  .post-outro {
-    max-width: 780px; margin: 0 auto; padding: 0 24px 60px;
-    font-size: 15.5px; line-height: 1.75; color: var(--muted, #aaa); font-style: italic;
-    border-top: 1px solid var(--border, #2a2a2a); padding-top: 28px;
-  }
-  .post-nav {
-    max-width: 780px; margin: 0 auto; padding: 0 24px 80px;
-    display: flex; justify-content: space-between; gap: 16px;
-  }
-  .post-nav a {
-    flex: 1; color: var(--muted, #888); text-decoration: none; font-size: 13px;
-    padding: 14px 16px; border: 1px solid var(--border, #2a2a2a); border-radius: 8px;
-    transition: border-color 0.15s ease, color 0.15s ease;
-  }
-  .post-nav a:hover { border-color: var(--accent, #7ee787); color: var(--fg, #eaeaea); }
-  .post-nav .next { text-align: right; }
-  .post-nav .nav-label {
-    display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;
-    margin-bottom: 4px; opacity: 0.7;
-  }
-  .post-nav .spacer { visibility: hidden; }
-  .post-not-found { max-width: 780px; margin: 0 auto; padding: 160px 24px 100px; text-align: center; }
+  .writeup-chip.easy { color: #7ee787; border-color: #7ee787; }
+  .writeup-chip.medium { color: #e3c567; border-color: #e3c567; }
+  .writeup-chip.hard { color: #e38b67; border-color: #e38b67; }
+  .writeup-chip.insane { color: #e36767; border-color: #e36767; }
+  .blog-meta-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 </style>
 </head>
 <body data-page="writeups">
 
-<!-- Header: identical to index.html so styling + mobile menu behavior match -->
 <header class="site-header">
   <div class="container header-inner">
     <a href="index.html#hero" class="logo" aria-label="eve portfolio home">
@@ -116,7 +68,6 @@
     </a>
     <aside class="side-nav" aria-label="Primary">
       <nav class="side-nav-list">
-        <a href="index.html#about" class="nav-link" data-section="about">about</a>
         <a href="index.html#education" class="nav-link" data-section="education">education</a>
         <a href="index.html#achievements" class="nav-link" data-section="achievements">achievements</a>
         <a href="index.html#projects" class="nav-link" data-section="projects">projects</a>
@@ -127,17 +78,12 @@
       </nav>
     </aside>
     <div class="nav-cta">
-      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light and dark mode">
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2.5M12 19v2.5M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2.5 12H5M19 12h2.5M4.2 19.8L6 18M18 6l1.8-1.8"/></svg>
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"/></svg>
-      </button>
       <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
         <span></span>
       </button>
     </div>
   </div>
   <div class="mobile-menu" id="mobile-menu">
-    <a href="index.html#about" class="nav-link">about</a>
     <a href="index.html#projects" class="nav-link">projects</a>
     <a href="index.html#blog" class="nav-link">blog</a>
     <a href="index.html#skills" class="nav-link">skills</a>
@@ -147,9 +93,31 @@
 </header>
 
 <main id="main">
-  <article id="post-root">
-    <!-- Filled in by script below. If the slug isn't found, a "not found" message renders instead. -->
-  </article>
+  <div class="blog-hero">
+    <a href="index.html#hero" class="blog-back">&larr; back to home</a>
+    <div class="post-eyebrow" style="font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;">CTF Write-ups</div>
+    <h1 class="section-title">Every solve, filterable by category and difficulty.</h1>
+    <p class="section-desc">Walkthroughs from CTFs and training platforms — web, pwn, crypto, reversing, and forensics challenges.</p>
+  </div>
+
+  <div class="blog-controls">
+    <div class="blog-search">
+      <input id="blog-search" type="text" placeholder="search by title or category&hellip;" autocomplete="off">
+    </div>
+    <div class="blog-filters" id="category-filters">
+      <!-- category pills injected by script -->
+    </div>
+    <div class="blog-filters difficulty-filters" id="difficulty-filters">
+      <!-- difficulty pills injected by script -->
+    </div>
+  </div>
+
+  <div class="blog-list-wrap">
+    <div class="blog-list" id="all-writeup-list">
+      <!-- Rendered by inline script below from js/writeup_data.js -->
+    </div>
+    <div class="blog-empty" id="blog-empty" style="display:none;">No write-ups match that search/filter.</div>
+  </div>
 </main>
 
 <footer>
@@ -173,153 +141,154 @@
 <script src="js/writeup_data.js"></script>
 <script src="js/script.js"></script>
 <script>
-  (async function(){
-    const params = new URLSearchParams(window.location.search);
-    const slug = params.get('writeup');
-    const post = slug && window.writeups ? window.writeups[slug] : null;
-    const root = document.getElementById('post-root');
+  (function(){
+    const posts = window.writeups || {};
 
-    if(!post){
-      root.innerHTML = `
-        <div class="post-not-found">
-          <h1 class="post-title">Write-up not found</h1>
-          <p style="color:var(--muted,#888);margin:16px 0 28px;">
-            No write-up matches "${slug || ''}". It may have been moved or the link is out of date.
-          </p>
-          <a href="writeups.html" class="post-back">&larr; back to write-ups</a>
-        </div>`;
-      return;
+    // Same freshness rules as the blog index: sort newest-first using
+    // publishedAt (falls back to the display `date` field), and show the
+    // NEW badge only for 14 days after publishedAt.
+    function parseDate(post){
+      const iso = post.publishedAt ? Date.parse(post.publishedAt) : NaN;
+      if(!isNaN(iso)) return iso;
+      const fallback = Date.parse('1 ' + (post.date || ''));
+      return isNaN(fallback) ? 0 : fallback;
     }
 
-    document.getElementById('page-title').textContent = post.title + ' :: evelyn@portfolio';
-    document.getElementById('page-description').setAttribute('content', post.intro.replace(/\s+/g, ' ').trim().slice(0, 155));
-
-    function dedent(text) {
-      text = text.replace(/^\n/, "");
-
-      const lines = text.split("\n");
-
-      const indents = lines
-        .filter(line => line.trim().length)
-        .map(line => line.match(/^ */)[0].length);
-
-      const minIndent = Math.min(...indents);
-
-      return lines
-        .map(line => line.slice(minIndent))
-        .join("\n")
-        .trimEnd();
+    const TIME = 7 * 24 * 60 * 60 * 1000;
+    function isRecent(post){
+      if(!post.publishedAt) return false;
+      const published = Date.parse(post.publishedAt);
+      return !isNaN(published) && (Date.now() - published) < TIME;
     }
 
-    function escapeHtml(str){
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
+    const order = (window.writeupOrder || Object.keys(posts))
+      .slice()
+      .sort((a, b) => parseDate(posts[b]) - parseDate(posts[a]));
+
+    const listEl = document.getElementById('all-writeup-list');
+    const emptyMsg = document.getElementById('blog-empty');
+    const categoryFiltersEl = document.getElementById('category-filters');
+    const difficultyFiltersEl = document.getElementById('difficulty-filters');
+    const searchInput = document.getElementById('blog-search');
+
+    // Categories and difficulties, both de-duped and sorted
+    const allCategories = [...new Set(order.map(key => posts[key].category).filter(Boolean))].sort();
+    const difficultyOrder = ["easy", "medium", "hard", "insane"];
+    const allDifficulties = difficultyOrder.filter(d =>
+      order.some(key => posts[key].difficulty === d)
+    );
+
+    let activeCategories = new Set();
+    let activeDifficulties = new Set();
+    let searchTerm = '';
+
+    function excerptOf(post){
+      const clean = (post.intro || '').replace(/\s+/g, ' ').trim();
+      return clean.length > 140 ? clean.slice(0, 140).trim() + '\u2026' : clean;
     }
 
-    // Optional per-section code block: sections can include `code` (the snippet)
-    // and `lang` (a short label like "python" or "bash") to render a
-    // terminal-style block with a copy button beneath the section's prose.
-    function codeBlockHTML(s){
-      if(!s.code) return '';
-      const lang = s.lang || 'code';
+    function itemHTML(key){
+      const p = posts[key];
+      const isNew = isRecent(p);
+      const metaBits = [p.date, p.read].filter(Boolean).join(' &middot; ');
       return `
-        <div class="code-block">
-          <div class="code-block-head">
-            <span>${escapeHtml(lang)}</span>
-            <button type="button" class="code-block-copy">copy</button>
+        <a href="writeup-post.html?writeup=${key}" class="blog-item">
+          <div class="blog-main">
+            <div class="blog-title">${p.title}${isNew ? ' <span class="new-badge">NEW</span>' : ''}</div>
+            <div class="blog-excerpt">${excerptOf(p)}</div>
+            <div class="blog-meta-row">
+              ${p.category ? `<span class="writeup-chip">${p.category}</span>` : ''}
+              ${p.difficulty ? `<span class="writeup-chip ${p.difficulty}">${p.difficulty}</span>` : ''}
+              ${p.platform ? `<span class="writeup-chip">${p.platform}</span>` : ''}
+              ${p.points != null ? `<span class="writeup-chip">${p.points} pts</span>` : ''}
+            </div>
           </div>
-          <pre><code>${escapeHtml(dedent(s.code))}</code></pre>
-        </div>`;
+          <span class="blog-meta">${metaBits}</span>
+          <span class="blog-arrow">&rarr;</span>
+        </a>`;
     }
 
-    const tagsHTML = (post.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
-    const sectionsHTML = await Promise.all(
-    (post.sections || []).map(async (s) => {
+    function matches(key){
+      const p = posts[key];
+      const inCategory = activeCategories.size === 0 || activeCategories.has(p.category);
+      const inDifficulty = activeDifficulties.size === 0 || activeDifficulties.has(p.difficulty);
+      const haystack = (p.title + ' ' + (p.intro || '') + ' ' + (p.category || '') + ' ' + (p.platform || '')).toLowerCase();
+      const inSearch = !searchTerm || haystack.includes(searchTerm);
+      return inCategory && inDifficulty && inSearch;
+    }
 
-        let code = '';
+    function render(){
+      const visible = order.filter(matches);
+      listEl.innerHTML = visible.map(itemHTML).join('');
+      emptyMsg.style.display = visible.length ? 'none' : 'block';
+    }
 
-        if (s.codeFile) {
-            const res = await fetch(s.codeFile);
-            code = await res.text();
-        } else if (s.code) {
-            code = s.code;
-        }
-
-        return `
-            ${s.heading ? `<h2>${s.heading}</h2>` : ''}
-            <p>${s.body}</p>
-            ${
-                code
-                    ? codeBlockHTML({
-                        code,
-                        lang: s.lang
-                    })
-                    : ''
-            }
-        `;
-    })
-);
-
-    // prev/next based on shared ordering in writeup_data.js
-    const order = window.writeupOrder || Object.keys(window.writeups);
-    const idx = order.indexOf(slug);
-    const prevSlug = idx > 0 ? order[idx - 1] : null;
-    const nextSlug = idx >= 0 && idx < order.length - 1 ? order[idx + 1] : null;
-
-    const metaBits = [
-      post.date,
-      post.read + ' read',
-      post.platform || null,
-      post.points != null ? post.points + ' pts' : null
-    ].filter(Boolean);
-
-    const metaHTML = metaBits
-      .map(bit => `<span>${bit}</span>`)
-      .join('<span>&middot;</span>');
-
-    const difficultyHTML = post.difficulty
-      ? `<span class="difficulty-badge ${post.difficulty}">${post.difficulty}</span>`
-      : '';
-
-    root.innerHTML = `
-      <div class="post-hero">
-        <a href="writeups.html" class="post-back">&larr; back to write-ups</a>
-        <div class="post-eyebrow">${post.category ? post.category + ' &middot; ' : ''}CTF Write-up</div>
-        <h1 class="post-title">${post.title}</h1>
-        <div class="post-meta">${metaHTML}${difficultyHTML ? `<span>&middot;</span>${difficultyHTML}` : ''}</div>
-        <div class="post-tags">${tagsHTML}</div>
-      </div>
-
-      <div class="post-body">
-        <p>${post.intro}</p>
-        ${sectionsHTML.join('')}
-      </div>
-
-      <div class="post-outro">${post.outro}</div>
-
-      <nav class="post-nav" aria-label="Write-up navigation">
-        ${prevSlug
-          ? `<a href="writeup-post.html?writeup=${prevSlug}" class="prev"><span class="nav-label">&larr; previous</span>${window.writeups[prevSlug].title}</a>`
-          : `<span class="spacer"></span>`}
-        ${nextSlug
-          ? `<a href="writeup-post.html?writeup=${nextSlug}" class="next"><span class="nav-label">next &rarr;</span>${window.writeups[nextSlug].title}</a>`
-          : `<span class="spacer"></span>`}
-      </nav>
-    `;
-
-    // Copy-to-clipboard for any code blocks in this write-up
-    root.querySelectorAll('.code-block-copy').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const code = btn.closest('.code-block').querySelector('code').textContent;
-        navigator.clipboard.writeText(code).then(() => {
-          const original = btn.textContent;
-          btn.textContent = 'copied';
-          setTimeout(() => { btn.textContent = original; }, 1500);
+    function renderCategoryFilters(){
+      const pillsHTML = allCategories.map(cat => `<button type="button" class="filter-pill" data-cat="${cat}">${cat}</button>`).join('');
+      categoryFiltersEl.innerHTML = `
+        <button type="button" class="filter-pill" data-cat="__all">all categories</button>
+        ${pillsHTML}
+        <span class="filter-count" id="filter-count"></span>`;
+      categoryFiltersEl.querySelectorAll('.filter-pill').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const cat = btn.dataset.cat;
+          if(cat === '__all'){
+            activeCategories.clear();
+          } else {
+            if(activeCategories.has(cat)) activeCategories.delete(cat);
+            else activeCategories.add(cat);
+          }
+          updatePillStates();
+          render();
         });
       });
+    }
+
+    function renderDifficultyFilters(){
+      const pillsHTML = allDifficulties.map(d => `<button type="button" class="filter-pill" data-diff="${d}">${d}</button>`).join('');
+      difficultyFiltersEl.innerHTML = `
+        <button type="button" class="filter-pill" data-diff="__all">all difficulties</button>
+        ${pillsHTML}`;
+      difficultyFiltersEl.querySelectorAll('.filter-pill').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const d = btn.dataset.diff;
+          if(d === '__all'){
+            activeDifficulties.clear();
+          } else {
+            if(activeDifficulties.has(d)) activeDifficulties.delete(d);
+            else activeDifficulties.add(d);
+          }
+          updatePillStates();
+          render();
+        });
+      });
+    }
+
+    function updatePillStates(){
+      categoryFiltersEl.querySelectorAll('.filter-pill').forEach(btn => {
+        const cat = btn.dataset.cat;
+        const isActive = cat === '__all' ? activeCategories.size === 0 : activeCategories.has(cat);
+        btn.classList.toggle('active', isActive);
+      });
+      difficultyFiltersEl.querySelectorAll('.filter-pill').forEach(btn => {
+        const d = btn.dataset.diff;
+        const isActive = d === '__all' ? activeDifficulties.size === 0 : activeDifficulties.has(d);
+        btn.classList.toggle('active', isActive);
+      });
+      const count = document.getElementById('filter-count');
+      if(count) count.textContent = `${order.filter(matches).length} of ${order.length}`;
+    }
+
+    searchInput.addEventListener('input', (e) => {
+      searchTerm = e.target.value.trim().toLowerCase();
+      updatePillStates();
+      render();
     });
+
+    renderCategoryFilters();
+    renderDifficultyFilters();
+    updatePillStates();
+    render();
   })();
 </script>
 

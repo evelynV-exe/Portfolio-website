@@ -5,15 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>evelyn@project</title>
 <meta name="description" content="Full list of projects — filter by stack.">
-<script>
-  (function(){
-    try{
-      if(localStorage.getItem('theme') === 'light'){
-        document.documentElement.setAttribute('data-theme','light');
-      }
-    }catch(e){}
-  })();
-</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -38,16 +29,7 @@
     font-family: inherit; font-size: 13.5px;
   }
   .projects-search input:focus{ border-color: var(--accent); outline: none; }
-  .projects-filters{ display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-  .filter-pill{
-    font-size: 12.5px; padding: 7px 13px; border-radius: 999px;
-    border: 1px solid var(--border-hover); color: var(--muted);
-    background: transparent; cursor: pointer; font-family: inherit;
-    transition: border-color 180ms var(--ease), color 180ms var(--ease), background 180ms var(--ease);
-  }
-  .filter-pill:hover{ border-color: var(--accent); color: var(--text); }
-  .filter-pill.active{ border-color: var(--accent); color: var(--accent); background: rgba(44,255,5,0.08); }
-  .filter-count{ font-size: 12px; color: var(--muted-dim); margin-left: auto; }
+  .filter-count{ font-size: 12px; color: var(--muted-dim); }
 
   .projects-grid-wrap{ max-width: 1120px; margin: 0 auto; padding: 36px 24px 100px; }
   .projects-empty{ color: var(--muted); font-size: 14px; padding: 40px 0; text-align: center; }
@@ -62,7 +44,6 @@
     </a>
     <aside class="side-nav" aria-label="Primary">
       <nav class="side-nav-list">
-        <a href="index.html#about" class="nav-link" data-section="about">about</a>
         <a href="index.html#education" class="nav-link" data-section="education">education</a>
         <a href="index.html#achievements" class="nav-link" data-section="achievements">achievements</a>
         <a href="index.html#projects" class="nav-link" data-section="projects">projects</a>
@@ -73,17 +54,12 @@
       </nav>
     </aside>
     <div class="nav-cta">
-      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light and dark mode">
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2.5M12 19v2.5M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2.5 12H5M19 12h2.5M4.2 19.8L6 18M18 6l1.8-1.8"/></svg>
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"/></svg>
-      </button>
       <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
         <span></span>
       </button>
     </div>
   </div>
   <div class="mobile-menu" id="mobile-menu">
-    <a href="index.html#about" class="nav-link">about</a>
     <a href="index.html#projects" class="nav-link">projects</a>
     <a href="index.html#blog" class="nav-link">blog</a>
     <a href="index.html#skills" class="nav-link">skills</a>
@@ -103,9 +79,6 @@
   <div class="projects-controls">
     <div class="projects-search">
       <input id="project-search" type="text" placeholder="search by name or description&hellip;" autocomplete="off">
-    </div>
-    <div class="projects-filters" id="project-filters">
-      <!-- tag pills injected by script -->
     </div>
   </div>
 
@@ -144,12 +117,8 @@
     const order = window.projectPostOrder || Object.keys(posts);
     const grid = document.getElementById('all-projects-grid');
     const emptyMsg = document.getElementById('projects-empty');
-    const filtersEl = document.getElementById('project-filters');
     const searchInput = document.getElementById('project-search');
 
-    // Build the sorted, de-duped tag list across every project
-    const allTags = [...new Set(order.flatMap(key => posts[key].tags || []))].sort();
-    let activeTags = new Set();
     let searchTerm = '';
 
     function cardHTML(key){
@@ -170,10 +139,8 @@
 
     function matches(key){
       const p = posts[key];
-      const inTags = activeTags.size === 0 || (p.tags || []).some(t => activeTags.has(t));
       const haystack = (p.title + ' ' + p.short).toLowerCase();
-      const inSearch = !searchTerm || haystack.includes(searchTerm);
-      return inTags && inSearch;
+      return !searchTerm || haystack.includes(searchTerm);
     }
 
     function render(){
@@ -182,45 +149,11 @@
       emptyMsg.style.display = visible.length ? 'none' : 'block';
     }
 
-    function renderFilters(){
-      const pillsHTML = allTags.map(tag => `<button type="button" class="filter-pill" data-tag="${tag}">${tag}</button>`).join('');
-      filtersEl.innerHTML = `
-        <button type="button" class="filter-pill" data-tag="__all">all</button>
-        ${pillsHTML}
-        <span class="filter-count" id="filter-count"></span>`;
-      filtersEl.querySelectorAll('.filter-pill').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const tag = btn.dataset.tag;
-          if(tag === '__all'){
-            activeTags.clear();
-          } else {
-            if(activeTags.has(tag)) activeTags.delete(tag);
-            else activeTags.add(tag);
-          }
-          updatePillStates();
-          render();
-        });
-      });
-      updatePillStates();
-    }
-
-    function updatePillStates(){
-      filtersEl.querySelectorAll('.filter-pill').forEach(btn => {
-        const tag = btn.dataset.tag;
-        const isActive = tag === '__all' ? activeTags.size === 0 : activeTags.has(tag);
-        btn.classList.toggle('active', isActive);
-      });
-      const count = document.getElementById('filter-count');
-      if(count) count.textContent = `${order.filter(matches).length} of ${order.length}`;
-    }
-
     searchInput.addEventListener('input', (e) => {
       searchTerm = e.target.value.trim().toLowerCase();
-      updatePillStates();
       render();
     });
 
-    renderFilters();
     render();
   })();
 </script>

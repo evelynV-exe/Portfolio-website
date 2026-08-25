@@ -32,7 +32,7 @@ window.achievements = {
   },
   'road-to-ctf-beginning': {
     title: "ROAD-TO-CTF Beginning",
-    date: "2026-07-19",
+    date: "2026-07-11",
     category: "CyberSecurity",
     description:
       "Participated in the ROAD-TO-CTF Beginning event, a cybersecurity competition designed for newcomers to the field. Gained foundational knowledge in web security, cryptography, and reverse engineering.",
