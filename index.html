@@ -27,8 +27,8 @@
   <div class="mobile-menu" id="mobile-menu">
     <a href="#education" class="nav-link">education</a>
     <a href="#achievements" class="nav-link">achievements</a>
+    <a href="#competitions" class="nav-link">competitions</a>
     <a href="#projects" class="nav-link">projects</a>
-    <a href="#blog" class="nav-link">blog</a>
     <a href="#writeups" class="nav-link">write-ups</a>
     <a href="#skills" class="nav-link">skills</a>
     <a href="#contact" class="nav-link">contact</a>
@@ -40,8 +40,8 @@
   <nav class="side-nav-list">
     <a href="#education" class="nav-link" data-section="education">education</a>
     <a href="#achievements" class="nav-link" data-section="achievements">achievements</a>
+    <a href="#competitions" class="nav-link" data-section="competitions">competitions</a>
     <a href="#projects" class="nav-link" data-section="projects">projects</a>
-    <a href="#blog" class="nav-link" data-section="blog">blog</a>
     <a href="#writeups" class="nav-link" data-section="writeups">write-ups</a>
     <a href="#skills" class="nav-link" data-section="skills">skills</a>
     <a href="#contact" class="nav-link" data-section="contact">contact</a>
@@ -71,7 +71,7 @@
             <h1 class="profile-name">Evelyn</h1>
             <span class="profile-handle">Benjarat Tamwong</span>
           </div>
-          <p class="profile-role">Full-Stack Developer &middot; Computer Engineering Student</p>
+          <p class="profile-role">CTF player &middot; Computer Engineering Student</p>
 
           <p class="profile-bio">
             Building systems that stay boring in production — across the stack,
@@ -85,7 +85,7 @@
             </div>
             <div class="profile-stat">
               <span class="profile-stat-label">focus</span>
-              <span class="profile-stat-value">Full-Stack &middot; Networking &middot; Security</span>
+              <span class="profile-stat-value">CTF &middot; Networking &middot; Security</span>
             </div>
             <div class="profile-stat">
               <span class="profile-stat-label">status</span>
@@ -96,7 +96,7 @@
           <div class="profile-socials">
             <a href="https://github.com/evelynV-exe" target="_blank" rel="noopener noreferrer" class="profile-social-link" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
             <a href="https://linkedin.com/in/evelynbt" target="_blank" rel="noopener noreferrer" class="profile-social-link" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-            <a href="https://instagram.com/0xevelyn.code" target="_blank" rel="noopener noreferrer" class="profile-social-link" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://www.instagram.com/gh0stp4cket/" target="_blank" rel="noopener noreferrer" class="profile-social-link" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
             <a href="mailto:asyncbyevelyn@gmail.com" class="profile-social-link" aria-label="Email"><i class="fa-regular fa-envelope"></i></a>
             <a href="https://medium.com/@inthepondddd" target="_blank" rel="noopener noreferrer" class="profile-social-link" aria-label="Medium"><i class="fa-brands fa-medium"></i></a>
           </div>
@@ -205,11 +205,30 @@
     </div>
   </section>
 
+  <!-- COMPETITION RESULTS -->
+  <section id="competitions">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="section-tag">03 / competitions</span>
+        <h2 class="section-title">Competition results</h2>
+        <p class="section-desc">CTFs and competitive programming events — what it was, and where I placed.</p>
+      </div>
+
+      <div class="reveal" id="competition-list">
+        <!-- Rendered below from the `competitions` array. -->
+      </div>
+
+      <div class="project-more reveal" style="padding-top: 15px;">
+        <a href="competitions.html" class="btn">view all competitions &rarr;</a>
+      </div>
+    </div>
+  </section>
+
   <!-- PROJECTS -->
   <section id="projects">
     <div class="container">
       <div class="section-head reveal">
-        <span class="section-tag">03 / projects</span>
+        <span class="section-tag">04 / projects</span>
         <h2 class="section-title">Selected work</h2>
         <p class="section-desc">A handful of things I've built, broken, and rebuilt. Mostly backend-heavy, occasionally with a UI attached.</p>
       </div>
@@ -224,41 +243,25 @@
     </div>
   </section>
 
-  <!-- BLOG -->
-  <section id="blog">
-    <div class="container">
-      <div class="section-head reveal">
-        <span class="section-tag">04 / blog</span>
-        <h2 class="section-title">Notes &amp; writing</h2>
-        <p class="section-desc">Mostly backend engineering, infrastructure tradeoffs, and things I had to learn the hard way.</p>
-      </div>
-
-      <div class="blog-list" id="blog-list">
-        <!-- Rendered by script.js from js/blog_data.js (most recent posts only) -->
-      </div>
-
-      <div class="blog-more reveal" style="padding-top: 15px;">
-        <a href="blogs.html" class="btn">view all posts &rarr;</a>
-      </div>
-    </div>
-  </section>
-
   <!-- WRITE-UPS -->
   <section id="writeups">
     <div class="container">
       <div class="section-head reveal">
-        <span class="section-tag">05 / write-ups</span>
+        <span class="section-tag">06 / write-ups</span>
         <h2 class="section-title">CTF write-ups</h2>
         <p class="section-desc">Walkthroughs from CTFs and training platforms — web, pwn, crypto, reversing, and forensics challenges.</p>
       </div>
 
-      <div class="blog-list" id="writeup-list">
-        <!-- Rendered by script.js from js/writeup_data.js (most recent write-ups only) -->
-      </div>
+      <div>Coming soon...</div>
 
+      <!--
+      <div class="blog-list" id="writeup-list">
+        Rendered by script.js from js/writeup_data.js (most recent write-ups only)
+      </div> 
       <div class="blog-more reveal" style="padding-top: 15px;">
         <a href="writeups.html" class="btn">view all write-ups &rarr;</a>
       </div>
+      -->
     </div>
   </section>
 
@@ -266,7 +269,7 @@
   <section id="skills">
     <div class="container">
       <div class="section-head reveal">
-        <span class="section-tag">06 / system</span>
+        <span class="section-tag">07 / system</span>
         <h2 class="section-title">System Configuration</h2>
       </div>
 
@@ -282,50 +285,6 @@
             <span class="badge">C</span>
             <span class="badge">C++</span>
             <span class="badge">SQL</span>
-          </div>
-        </div>
-
-        <div class="skill-card reveal">
-          <h4><i class="fa-solid fa-display"></i> frontend <span class="skill-count">6</span></h4>
-          <div class="badge-row">
-            <span class="badge">React</span>
-            <span class="badge">Next.js</span>
-            <span class="badge">Tailwind CSS</span>
-            <span class="badge">Framer Motion</span>
-            <span class="badge">Responsive Design</span>
-            <span class="badge">Vite</span>
-          </div>
-        </div>
-
-        <div class="skill-card reveal">
-          <h4><i class="fa-solid fa-server"></i> backend & databases <span class="skill-count">4</span></h4>
-          <div class="badge-row">
-            <span class="badge">Node.js</span>
-            <span class="badge">Express.js</span>
-            <span class="badge">PostgreSQL</span>
-            <span class="badge">Flask</span>
-          </div>
-        </div>
-
-        <div class="skill-card reveal">
-          <h4><i class="fa-solid fa-chart-line"></i> python & data <span class="skill-count">6</span></h4>
-          <div class="badge-row">
-            <span class="badge">Pandas</span>
-            <span class="badge">NumPy</span>
-            <span class="badge">Scikit-learn</span>
-            <span class="badge">XGBoost</span>
-            <span class="badge">FastF1</span>
-            <span class="badge">psutil</span>
-          </div>
-        </div>
-
-        <div class="skill-card reveal">
-          <h4><i class="fa-solid fa-wrench"></i> tools <span class="skill-count">4</span></h4>
-          <div class="badge-row">
-            <span class="badge">Git</span>
-            <span class="badge">GitHub</span>
-            <span class="badge">VS Code</span>
-            <span class="badge">Linux</span>
           </div>
         </div>
 
@@ -372,7 +331,7 @@
   <section id="contact">
     <div class="container">
     <div class="section-head reveal">
-      <span class="section-tag">07 / contact</span>
+      <span class="section-tag">08 / contact</span>
       <h2 class="section-title">Let's get in touch.</h2>
       <p class="section-desc">Reach out through whichever channel works best — I'll get back to you.</p>
     </div>
@@ -402,7 +361,7 @@
         <span class="contact-arrow">↗</span>
       </a>
 
-      <a href="https://instagram.com/0xevelyn.code"
+      <a href="https://www.instagram.com/gh0stp4cket"
         target="_blank"
         rel="noopener noreferrer"
         class="contact-link">
@@ -411,7 +370,7 @@
         </span>
         <span class="contact-info">
           <span class="contact-label">INSTAGRAM</span>
-          <span class="contact-value">instagram.com/0xevelyn.code</span>
+          <span class="contact-value">instagram.com/gh0stp4cket</span>
         </span>
         <span class="contact-arrow">↗</span>
       </a>
@@ -468,11 +427,48 @@
   </div>
 </footer>
 
-<script src="js/blog_data.js"></script>
-<script src="js/writeup_data.js"></script>
+<!--<script src="js/writeup_data.js"></script> -->
 <script src="js/project_data.js"></script>
 <script src="js/achievements_data.js"></script>
+<script src="js/competitions_data.js"></script>
 <script src="js/script.js"></script>
+
+<script>
+  // Renders the "competition results" section from window.competitions
+  // (defined in js/competitions_data.js). Kept self-contained so it works
+  // regardless of what script.js does elsewhere.
+  (function(){
+    const list = document.getElementById('competition-list');
+    if(!list) return;
+    const items = window.competitions || [];
+
+    function yearOf(c){
+      const m = (c.date || '').match(/\d{4}/);
+      return m ? m[0] : 'Undated';
+    }
+
+    const years = [...new Set(items.map(yearOf))].sort((a, b) => {
+      if(a === 'Undated') return 1;
+      if(b === 'Undated') return -1;
+      return b.localeCompare(a);
+    });
+
+    list.innerHTML = years.map(year => `
+      <div class="competition-year">${year}</div>
+      <div class="competition-list">
+        ${items.filter(c => yearOf(c) === year).map(c => `
+          <div class="competition-item">
+            <div class="competition-main">
+              <div class="competition-event">${c.event}${c.date ? ` <span class="competition-date">&middot; ${c.date}</span>` : ''}</div>
+              <div class="competition-desc">${c.description}</div>
+            </div>
+            <span class="competition-position">${c.position}</span>
+          </div>
+        `).join('')}
+      </div>
+    `).join('');
+  })();
+</script>
 
 </body>
 </html>

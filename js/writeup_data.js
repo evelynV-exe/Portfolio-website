@@ -144,11 +144,11 @@ window.writeups = {
             technique. The key detail is the difference between one-based character \
             mapping and Python's zero-based string indexing, which is handled by \
             subtracting one from each inverse before indexing the character set."
-  },
-
+  }
 };
 
+/* 
 window.writeupOrder = [
-  "basic-mod1",
-  "basic-mod2",
+
 ];
+*/

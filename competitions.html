@@ -3,39 +3,39 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>evelyn@project</title>
-<meta name="description" content="Full list of projects — filter by stack.">
+<title>evelyn@competitions</title>
+<meta name="description" content="CTF and competitive programming results — searchable list.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 <style>
-  /* ---- Projects-index-specific styles (not in style.css) ---- */
-  .projects-hero { max-width: 1120px; margin: 0 auto; padding: 150px 24px 0; }
-  .projects-back {
+  /* ---- Competitions-index-specific styles (not in style.css) ---- */
+  .blog-hero { max-width: 1120px; margin: 0 auto; padding: 150px 24px 0; }
+  .blog-back {
     display: inline-flex; align-items: center; gap: 6px;
     color: var(--muted); text-decoration: none; font-size: 13px; margin-bottom: 28px;
   }
-  .projects-back:hover { color: var(--text); }
+  .blog-back:hover { color: var(--text); }
 
-  .projects-controls {
+  .blog-controls {
     max-width: 1120px; margin: 40px auto 0; padding: 0 24px;
     display: flex; flex-direction: column; gap: 18px;
   }
-  .projects-search input{
+  .blog-search input{
     width: 100%; max-width: 360px;
     background: var(--bg-raised); border: 1px solid var(--border);
     border-radius: var(--radius-sm); padding: 11px 14px; color: var(--text);
     font-family: inherit; font-size: 13.5px;
   }
-  .projects-search input:focus{ border-color: var(--accent); outline: none; }
-  .filter-count{ font-size: 12px; color: var(--muted-dim); }
+  .blog-search input:focus{ border-color: var(--accent); outline: none; }
 
-  .projects-grid-wrap{ max-width: 1120px; margin: 0 auto; padding: 36px 24px 100px; }
-  .projects-empty{ color: var(--muted); font-size: 14px; padding: 40px 0; text-align: center; }
+  .blog-list-wrap{ max-width: 1120px; margin: 0 auto; padding: 36px 24px 100px; }
+  .blog-empty{ color: var(--muted); font-size: 14px; padding: 40px 0; text-align: center; }
+  .filter-count{ font-size: 12px; color: var(--muted-dim); }
 </style>
 </head>
-<body data-page="projects">
+<body data-page="competitions">
 
 <header class="site-header">
   <div class="container header-inner">
@@ -71,24 +71,25 @@
 </header>
 
 <main id="main">
-  <div class="projects-hero">
-    <a href="index.html#projects" class="projects-back">&larr; back to home</a>
-    <div class="post-eyebrow" style="font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;">All Work</div>
-    <h1 class="section-title">Every project, filterable by stack.</h1>
-    <p class="section-desc">Everything I've built, not just the highlights on the homepage.</p>
+  <div class="blog-hero">
+    <a href="index.html#competitions" class="blog-back">&larr; back to home</a>
+    <div class="post-eyebrow" style="font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;">Competition Results</div>
+    <h1 class="section-title">Every event, searchable.</h1>
+    <p class="section-desc">CTFs and competitive programming — what it was, when it happened, and where I placed.</p>
   </div>
 
-  <div class="projects-controls">
-    <div class="projects-search">
-      <input id="project-search" type="text" placeholder="search by name or description&hellip;" autocomplete="off">
+  <div class="blog-controls">
+    <div class="blog-search">
+      <input id="competition-search" type="text" placeholder="search by event name&hellip;" autocomplete="off">
     </div>
+    <span class="filter-count" id="filter-count"></span>
   </div>
 
-  <div class="projects-grid-wrap">
-    <div class="project-grid" id="all-projects-grid">
-      <!-- Rendered by inline script below from js/project_data.js -->
+  <div class="blog-list-wrap">
+    <div id="all-competition-list">
+      <!-- Rendered by inline script below from js/competitions_data.js -->
     </div>
-    <div class="projects-empty" id="projects-empty" style="display:none;">No projects match that search/filter.</div>
+    <div class="blog-empty" id="competition-empty" style="display:none;">No competitions match that search.</div>
   </div>
 </main>
 
@@ -110,44 +111,59 @@
   </div>
 </footer>
 
-<script src="js/project_data.js"></script>
+<script src="js/competitions_data.js"></script>
 <script src="js/script.js"></script>
 <script>
   (function(){
-    const posts = window.projectPosts || {};
-    const order = window.projectPostOrder || Object.keys(posts);
-    const grid = document.getElementById('all-projects-grid');
-    const emptyMsg = document.getElementById('projects-empty');
-    const searchInput = document.getElementById('project-search');
+    const items = window.competitions || [];
 
+    const listEl = document.getElementById('all-competition-list');
+    const emptyMsg = document.getElementById('competition-empty');
+    const searchInput = document.getElementById('competition-search');
+    const countEl = document.getElementById('filter-count');
     let searchTerm = '';
 
-    function cardHTML(key){
-      const p = posts[key];
-      const tags = (p.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
-      const githubLink = p.github ? `<a href="${p.github}" target="_blank" rel="noopener" class="card-link">source</a>` : '';
+    function itemHTML(c){
       return `
-        <article class="project-card">
-          <div class="project-card-head"><span class="file">~/projects/${key}</span></div>
-          <div class="project-card-body">
-            <h3><span class="arrow">&gt;</span> ${p.title}</h3>
-            <p>${p.short}</p>
-            <div class="tag-row">${tags}</div>
-            <div class="card-links"><a href="project-post.html?project=${key}" class="card-link">view project</a>${githubLink}</div>
+        <div class="competition-item">
+          <div class="competition-main">
+            <div class="competition-event">${c.event}${c.date ? ` <span class="competition-date">&middot; ${c.date}</span>` : ''}</div>
+            <div class="competition-desc">${c.description}</div>
           </div>
-        </article>`;
+          <span class="competition-position">${c.position}</span>
+        </div>`;
     }
 
-    function matches(key){
-      const p = posts[key];
-      const haystack = (p.title + ' ' + p.short).toLowerCase();
-      return !searchTerm || haystack.includes(searchTerm);
+    function yearOf(c){
+      const m = (c.date || '').match(/\d{4}/);
+      return m ? m[0] : 'Undated';
+    }
+
+    function matches(c){
+      if(!searchTerm) return true;
+      const haystack = (c.event + ' ' + (c.description || '') + ' ' + (c.position || '')).toLowerCase();
+      return haystack.includes(searchTerm);
     }
 
     function render(){
-      const visible = order.filter(matches);
-      grid.innerHTML = visible.map(cardHTML).join('');
+      const visible = items.filter(matches);
+
+      // Group by year, newest first ('Undated' sinks to the bottom).
+      const years = [...new Set(visible.map(yearOf))].sort((a, b) => {
+        if(a === 'Undated') return 1;
+        if(b === 'Undated') return -1;
+        return b.localeCompare(a);
+      });
+
+      listEl.innerHTML = years.map(year => `
+        <div class="competition-year">${year}</div>
+        <div class="competition-list">
+          ${visible.filter(c => yearOf(c) === year).map(itemHTML).join('')}
+        </div>
+      `).join('');
+
       emptyMsg.style.display = visible.length ? 'none' : 'block';
+      countEl.textContent = `${visible.length} of ${items.length}`;
     }
 
     searchInput.addEventListener('input', (e) => {

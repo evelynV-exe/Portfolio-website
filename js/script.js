@@ -14,7 +14,7 @@
   }));
 
   // ---------- Active nav on scroll ----------
-  const sections = ['about','education','achievements','projects','blog','writeups','skills','experience','contact'];
+  const sections = ['education','achievements', 'competitions', 'projects','writeups','skills','contact'];
   const navLinks = document.querySelectorAll('.nav-link[data-section]');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -110,7 +110,7 @@
     projectGridEl.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
   }
 
-  // ---------- Blog date/freshness helpers (shared by homepage list + terminal) ----------
+  // ---------- Post date/freshness helpers (shared by write-ups list + terminal) ----------
   // A post is "recent" for TWO_WEEKS_MS after its publishedAt date. Falls back
   // to parsing the display `date` field ("Jul 2026") for sorting if publishedAt
   // is missing, so older posts without the field don't crash sorting — they
@@ -135,36 +135,7 @@
     return clean.length > 140 ? clean.slice(0, 140).trim() + '\u2026' : clean;
   }
 
-  // ---------- Homepage blog list ----------
-  const blogListEl = document.getElementById('blog-list');
-  if(blogListEl && window.blogPosts){
-    const order = (window.blogPostOrder || Object.keys(window.blogPosts))
-      .slice()
-      .sort((a, b) => parseBlogDate(window.blogPosts[b]) - parseBlogDate(window.blogPosts[a]));
-
-    const HOMEPAGE_POST_COUNT = 3;
-    const recent = order.slice(0, HOMEPAGE_POST_COUNT);
-
-    blogListEl.innerHTML = recent.map(key => {
-      const p = window.blogPosts[key];
-      const isNew = isRecentPost(p);
-      return `
-        <a href="blog-post.html?post=${key}" class="blog-item reveal">
-          <div class="blog-main">
-            <div class="blog-title">${p.title}${isNew ? ' <span class="new-badge">NEW</span>' : ''}</div>
-            <div class="blog-excerpt">${excerptOf(p)}</div>
-          </div>
-          <span class="blog-meta">${p.date} &middot; ${p.read}</span>
-          <span class="blog-arrow">&rarr;</span>
-        </a>`;
-    }).join('');
-    // newly-injected .reveal items need to be observed for the scroll-in animation
-    blogListEl.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-  }
-
   // ---------- Homepage write-ups list ----------
-  // Mirrors the blog list above exactly, but reads from js/writeup_data.js
-  // (window.writeups / window.writeupOrder) and links into writeup-post.html.
   const writeupListEl = document.getElementById('writeup-list');
   if(writeupListEl && window.writeups){
     const order = (window.writeupOrder || Object.keys(window.writeups))

@@ -741,3 +741,29 @@
       grid-template-columns: 1fr;
     }
   }
+
+  /* ---------- Competition Results ---------- */
+  .competition-list{
+    display:flex;flex-direction:column;gap:14px;margin-top:10px;
+  }
+  .competition-item{
+    display:flex;align-items:center;justify-content:space-between;gap:20px;
+    padding:18px 20px;
+    border:1px solid var(--border);border-radius:var(--radius-lg);
+    background:var(--bg-raised);
+    transition:border-color 200ms var(--ease), transform 200ms var(--ease);
+  }
+  .competition-item:hover{border-color:var(--border-hover);transform:translateY(-2px);}
+  .competition-main{min-width:0;}
+  .competition-event{font-size:15.5px;font-weight:700;margin-bottom:6px;}
+  .competition-date{font-size:12px;font-weight:500;color:var(--muted-dim);}
+  .competition-desc{font-size:13px;color:var(--muted);max-width:520px;}
+  .competition-position{
+    flex-shrink:0;font-size:12.5px;font-weight:700;color:var(--accent);
+    border:1px solid var(--border-hover);border-radius:999px;
+    padding:7px 14px;white-space:nowrap;
+  }
+  @media (max-width:560px){
+    .competition-item{flex-direction:column;align-items:flex-start;gap:10px;}
+    .competition-position{align-self:flex-start;}
+  }
