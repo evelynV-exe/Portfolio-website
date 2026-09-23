@@ -81,7 +81,7 @@ window.writeups = [
   }
 
   // Show a NEW badge for 7 days after `date`
-  const TIME = 14 * 24 * 60 * 60 * 1000;
+  const TIME = 7 * 24 * 60 * 60 * 1000;
 
   function isRecentWriteup(writeup) {
     if (!writeup.date) return false;

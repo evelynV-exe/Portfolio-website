@@ -438,39 +438,99 @@
 </script>
 
 <script>
-  // Renders the "competition results" section from window.competitions
-  // (defined in js/competitions_data.js). Kept self-contained so it works
-  // regardless of what script.js does elsewhere.
+  // ---------- Competition Results ----------
   (function(){
     const list = document.getElementById('competition-list');
     if(!list) return;
-    const items = window.competitions || [];
 
-    function yearOf(c){
-      const m = (c.date || '').match(/\d{4}/);
-      return m ? m[0] : 'Undated';
+    const items = (window.competitions || []).slice();
+
+    const new_times = 7 * 24 * 60 * 60 * 1000;
+
+    // Get the first date from a competition date string.
+    function parseCompetitionDate(date){
+      if(!date) return 0;
+
+      const match = date.match(/(\d{1,2})\s*[.-]\s*(\d{1,2})\s*[.-]\s*(\d{4})/);
+
+      if(!match) return 0;
+
+      const day = Number(match[1]);
+      const month = Number(match[2]) - 1;
+      const year = Number(match[3]);
+
+      return new Date(year, month, day).getTime();
     }
 
-    const years = [...new Set(items.map(yearOf))].sort((a, b) => {
-      if(a === 'Undated') return 1;
-      if(b === 'Undated') return -1;
-      return b.localeCompare(a);
+    function yearOf(c){
+      const timestamp = parseCompetitionDate(c.date);
+
+      if(!timestamp) return 'Undated';
+
+      return new Date(timestamp).getFullYear().toString();
+    }
+
+    function isRecentCompetition(c){
+      const date = parseCompetitionDate(c.date);
+
+      if(!date) return false;
+
+      const age = Date.now() - date;
+
+      return age >= 0 && age <= new_times;
+    }
+
+    // Sort newest competition first.
+    items.sort((a, b) => {
+      return parseCompetitionDate(b.date) - parseCompetitionDate(a.date);
     });
 
-    list.innerHTML = years.map(year => `
-      <div class="competition-year">${year}</div>
-      <div class="competition-list">
-        ${items.filter(c => yearOf(c) === year).map(c => `
-          <div class="competition-item">
-            <div class="competition-main">
-              <div class="competition-event">${c.event}${c.date ? ` <span class="competition-date">&middot; ${c.date}</span>` : ''}</div>
-              <div class="competition-desc">${c.description}</div>
-            </div>
-            <span class="competition-position">${c.position}</span>
-          </div>
-        `).join('')}
-      </div>
-    `).join('');
+    const years = [...new Set(items.map(yearOf))];
+
+    list.innerHTML = years.map(year => {
+
+      const yearItems = items.filter(c => yearOf(c) === year);
+
+      return `
+        <div class="competition-year">${year}</div>
+
+        <div class="competition-list">
+          ${yearItems.map(c => {
+            const isNew = isRecentCompetition(c);
+
+            return `
+              <div class="competition-item">
+
+                <div class="competition-main">
+
+                  <div class="competition-event">
+                    ${c.event}
+
+                    ${isNew ? '<span class="competition-new">NEW</span>' : ''}
+
+                    ${c.date ? `
+                      <span class="competition-date">
+                        &middot; ${c.date}
+                      </span>
+                    ` : ''}
+                  </div>
+
+                  <div class="competition-desc">
+                    ${c.description}
+                  </div>
+
+                </div>
+
+                <span class="competition-position">
+                  ${c.position}
+                </span>
+
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }).join('');
   })();
 </script>
 
