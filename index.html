@@ -410,12 +410,19 @@
 <script src="js/script.js"></script>
 
 <script>
-  // Renders the write-ups section from window.writeups
+  // Renders only the 3 latest write-ups from window.writeups
   (function(){
     const list = document.getElementById('writeups-list');
     if(!list) return;
 
-    const items = window.writeups || [];
+    const items = (window.writeups || [])
+      .slice()
+      .sort((a, b) => {
+        const dateA = new Date(a.date.split('.').reverse().join('-'));
+        const dateB = new Date(b.date.split('.').reverse().join('-'));
+        return dateB - dateA;
+      })
+      .slice(0, 3);
 
     list.innerHTML = items.map(writeup => `
       <a href="writeups.html" class="blog-item">
