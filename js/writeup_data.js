@@ -57,7 +57,6 @@ window.writeups = [
   }
 ];
 
-
 (function () {
   const container = document.getElementById("writeups-container");
   if (!container) return;
@@ -81,6 +80,23 @@ window.writeups = [
     return new Date(0);
   }
 
+  // Show a NEW badge for 7 days after `date`
+  const TIME = 14 * 24 * 60 * 60 * 1000;
+
+  function isRecentWriteup(writeup) {
+    if (!writeup.date) return false;
+
+    const match = writeup.date.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
+    if (!match) return false;
+
+    const [, day, month, year] = match;
+    const added = new Date(year, month - 1, day).getTime();
+
+    return !isNaN(added) &&
+      Date.now() >= added &&
+      (Date.now() - added) < TIME;
+  }
+
   function yearOf(writeup) {
     const match = (writeup.date || "").match(/\d{4}/);
     return match ? match[0] : "Undated";
@@ -99,27 +115,40 @@ window.writeups = [
 
     return `
       <div class="writeup-year">${year}</div>
+
       <div class="writeup-list">
         ${items.map(writeup => `
           <a href="${writeup.url}" target="_blank" rel="noopener noreferrer" class="writeup-card">
+
             <div class="writeup-card-head">
               <span class="writeup-path">${writeup.slug}</span>
               <span class="writeup-arrow">&#8599;</span>
             </div>
 
             <div class="writeup-card-body">
+
               <div class="writeup-top">
                 <span class="writeup-event">${writeup.event}</span>
                 <span class="writeup-date">&middot; ${writeup.date}</span>
               </div>
 
+              ${isRecentWriteup(writeup)
+                ? '<span class="writeup-new">NEW</span>'
+                : ''
+              }
+
               <p class="writeup-desc">${writeup.description}</p>
 
               <div class="writeup-tags">
-                ${(writeup.tags || []).map(tag => `<span class="tag">${tag}</span>`).join("")}
+                ${(writeup.tags || [])
+                  .map(tag => `<span class="tag">${tag}</span>`)
+                  .join("")}
               </div>
 
-              <div class="writeup-medium">follow the link &rarr;</div>
+              <div class="writeup-medium">
+                follow the link &rarr;
+              </div>
+
             </div>
           </a>
         `).join("")}
