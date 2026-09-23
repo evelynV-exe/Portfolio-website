@@ -15,7 +15,7 @@
 <header class="site-header">
   <div class="container header-inner">
     <a href="#hero" class="logo" aria-label="eve portfolio home">
-      <span class="prompt">&gt;_</span> evelyn@portfolio <span class="blink-dot" aria-hidden="true"></span>
+      <span class="prompt">&gt;_</span> evelyn@portfolio
     </a>
     <div class="nav-cta">
       <a href="resume.pdf" class="btn" id="resume-btn" target="_blank" rel="noopener">./resume.pdf</a>
@@ -28,7 +28,6 @@
     <a href="#education" class="nav-link">education</a>
     <a href="#achievements" class="nav-link">achievements</a>
     <a href="#competitions" class="nav-link">competitions</a>
-    <a href="#projects" class="nav-link">projects</a>
     <a href="#writeups" class="nav-link">write-ups</a>
     <a href="#skills" class="nav-link">skills</a>
     <a href="#contact" class="nav-link">contact</a>
@@ -41,7 +40,6 @@
     <a href="#education" class="nav-link" data-section="education">education</a>
     <a href="#achievements" class="nav-link" data-section="achievements">achievements</a>
     <a href="#competitions" class="nav-link" data-section="competitions">competitions</a>
-    <a href="#projects" class="nav-link" data-section="projects">projects</a>
     <a href="#writeups" class="nav-link" data-section="writeups">write-ups</a>
     <a href="#skills" class="nav-link" data-section="skills">skills</a>
     <a href="#contact" class="nav-link" data-section="contact">contact</a>
@@ -224,44 +222,22 @@
     </div>
   </section>
 
-  <!-- PROJECTS -->
-  <section id="projects">
-    <div class="container">
-      <div class="section-head reveal">
-        <span class="section-tag">04 / projects</span>
-        <h2 class="section-title">Selected work</h2>
-        <p class="section-desc">A handful of things I've built, broken, and rebuilt. Mostly backend-heavy, occasionally with a UI attached.</p>
-      </div>
-
-      <div class="project-grid" id="project-grid">
-        <!-- Rendered by script.js from js/project_data.js (featured projects only) -->
-      </div>
-
-      <div class="project-more reveal" style="padding-top: 15px;">
-        <a href="projects.html" class="btn">view all projects &rarr;</a>
-      </div>
-    </div>
-  </section>
-
   <!-- WRITE-UPS -->
   <section id="writeups">
     <div class="container">
       <div class="section-head reveal">
-        <span class="section-tag">06 / write-ups</span>
+        <span class="section-tag">04 / write-ups</span>
         <h2 class="section-title">CTF write-ups</h2>
         <p class="section-desc">Walkthroughs from CTFs and training platforms — web, pwn, crypto, reversing, and forensics challenges.</p>
       </div>
 
-      <div>Coming soon...</div>
+      <div class="blog-list reveal" id="writeups-list">
+        <!-- Rendered from js/writeups_data.js -->
+      </div>
 
-      <!--
-      <div class="blog-list" id="writeup-list">
-        Rendered by script.js from js/writeup_data.js (most recent write-ups only)
-      </div> 
-      <div class="blog-more reveal" style="padding-top: 15px;">
+      <div class="project-more reveal" style="padding-top: 15px;">
         <a href="writeups.html" class="btn">view all write-ups &rarr;</a>
       </div>
-      -->
     </div>
   </section>
 
@@ -269,7 +245,7 @@
   <section id="skills">
     <div class="container">
       <div class="section-head reveal">
-        <span class="section-tag">07 / system</span>
+        <span class="section-tag">05 / system</span>
         <h2 class="section-title">System Configuration</h2>
       </div>
 
@@ -331,7 +307,7 @@
   <section id="contact">
     <div class="container">
     <div class="section-head reveal">
-      <span class="section-tag">08 / contact</span>
+      <span class="section-tag">06 / contact</span>
       <h2 class="section-title">Let's get in touch.</h2>
       <p class="section-desc">Reach out through whichever channel works best — I'll get back to you.</p>
     </div>
@@ -427,11 +403,32 @@
   </div>
 </footer>
 
-<!--<script src="js/writeup_data.js"></script> -->
+<script src="js/writeup_data.js"></script>
 <script src="js/project_data.js"></script>
 <script src="js/achievements_data.js"></script>
 <script src="js/competitions_data.js"></script>
 <script src="js/script.js"></script>
+
+<script>
+  // Renders the write-ups section from window.writeups
+  (function(){
+    const list = document.getElementById('writeups-list');
+    if(!list) return;
+
+    const items = window.writeups || [];
+
+    list.innerHTML = items.map(writeup => `
+      <a href="writeups.html" class="blog-item">
+        <div class="blog-main">
+          <div class="blog-title">${writeup.event}</div>
+          <div class="blog-excerpt">${writeup.description}</div>
+        </div>
+        <span class="blog-meta">${writeup.date}</span>
+        <span class="blog-arrow">&rarr;</span>
+      </a>
+    `).join('');
+  })();
+</script>
 
 <script>
   // Renders the "competition results" section from window.competitions

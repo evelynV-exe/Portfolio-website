@@ -3,60 +3,81 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>evelyn@writeups</title>
-<meta name="description" content="CTF write-ups — filter by category or difficulty.">
+<title>evelyn@write-ups</title>
+<meta name="description" content="CTF write-ups and cybersecurity walkthroughs, published on Medium.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 <style>
-  /* ---- Write-up-index-specific styles (not in style.css) ---- */
-  .blog-hero { max-width: 1120px; margin: 0 auto; padding: 150px 24px 0; }
-  .blog-back {
+  /* ---- Write-ups-index-specific styles (not in style.css) ---- */
+  .writeup-hero { max-width: 1120px; margin: 0 auto; padding: 150px 24px 0; }
+  .writeup-back {
     display: inline-flex; align-items: center; gap: 6px;
     color: var(--muted); text-decoration: none; font-size: 13px; margin-bottom: 28px;
   }
-  .blog-back:hover { color: var(--text); }
+  .writeup-back:hover { color: var(--text); }
 
-  .blog-controls {
-    max-width: 1120px; margin: 40px auto 0; padding: 0 24px;
-    display: flex; flex-direction: column; gap: 18px;
-  }
-  .blog-search input{
-    width: 100%; max-width: 360px;
-    background: var(--bg-raised); border: 1px solid var(--border);
-    border-radius: var(--radius-sm); padding: 11px 14px; color: var(--text);
-    font-family: inherit; font-size: 13.5px;
-  }
-  .blog-search input:focus{ border-color: var(--accent); outline: none; }
-  .blog-filters{ display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-  .filter-pill{
-    font-size: 12.5px; padding: 7px 13px; border-radius: 999px;
-    border: 1px solid var(--border-hover); color: var(--muted);
-    background: transparent; cursor: pointer; font-family: inherit;
-    transition: border-color 180ms var(--ease), color 180ms var(--ease), background 180ms var(--ease);
-  }
-  .filter-pill:hover{ border-color: var(--accent); color: var(--text); }
-  .filter-pill.active{ border-color: var(--accent); color: var(--accent); background: rgba(44,255,5,0.08); }
-  .filter-count{ font-size: 12px; color: var(--muted-dim); margin-left: auto; }
+  .writeup-list-wrap{ max-width: 1120px; margin: 0 auto; padding: 50px 24px 100px; }
 
-  /* second row of pills for difficulty, visually distinguished from category pills */
-  .blog-filters.difficulty-filters .filter-pill.active { background: rgba(126,231,135,0.08); }
-
-  .blog-list-wrap{ max-width: 1120px; margin: 0 auto; padding: 36px 24px 100px; }
-  .blog-empty{ color: var(--muted); font-size: 14px; padding: 40px 0; text-align: center; }
-
-  /* write-up list items get a couple of extra meta chips blog posts don't have */
-  .writeup-chip {
-    font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em;
-    padding: 2px 8px; border-radius: 999px; border: 1px solid var(--border, #2a2a2a);
-    color: var(--muted, #888); white-space: nowrap;
+  .writeup-year{
+    display: flex; align-items: center; gap: 14px;
+    color: var(--accent); font-size: 12px; letter-spacing: 0.08em;
+    text-transform: uppercase; margin: 0 0 16px;
   }
-  .writeup-chip.easy { color: #7ee787; border-color: #7ee787; }
-  .writeup-chip.medium { color: #e3c567; border-color: #e3c567; }
-  .writeup-chip.hard { color: #e38b67; border-color: #e38b67; }
-  .writeup-chip.insane { color: #e36767; border-color: #e36767; }
-  .blog-meta-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .writeup-year::after{ content: ""; flex: 1; height: 1px; background: var(--border); }
+  .writeup-year:not(:first-child){ margin-top: 10px; }
+
+  .writeup-list{ display: flex; flex-direction: column; gap: 14px; margin-bottom: 38px; }
+
+  .writeup-card{
+    display: block; padding: 0; overflow: hidden;
+    background: var(--bg-raised); border: 1px solid var(--border); border-radius: var(--radius-lg);
+    text-decoration: none; color: inherit;
+    transition: border-color 200ms var(--ease), transform 200ms var(--ease), box-shadow 200ms var(--ease);
+  }
+  .writeup-card:hover{
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 18px 34px -24px rgba(44,255,5,0.28);
+  }
+
+  .writeup-card-head{
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+    font-size: 11.5px; color: var(--muted-dim);
+  }
+  .writeup-path::before{ content: "~/writeups/"; color: var(--muted-dim); }
+  .writeup-path{ color: var(--muted); }
+  .writeup-arrow{ font-size: 13px; color: var(--muted-dim); transition: color 200ms var(--ease), transform 200ms var(--ease); }
+  .writeup-card:hover .writeup-arrow{ color: var(--accent); transform: translate(2px, -2px); }
+
+  .writeup-card-body{ padding: 20px 24px 24px; }
+
+  .writeup-top{ display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+  .writeup-event{ font-size: 16px; font-weight: 700; }
+  .writeup-date{ font-size: 12px; font-weight: 500; color: var(--muted-dim); }
+
+  .writeup-desc{ color: var(--muted); font-size: 13px; line-height: 1.7; max-width: 640px; margin-bottom: 18px; }
+
+  .writeup-tags{ display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+
+  .writeup-medium{
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11.5px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--border); border-radius: var(--radius-sm);
+    padding: 8px 14px;
+    transition: border-color 200ms var(--ease), background 200ms var(--ease);
+  }
+  .writeup-card:hover .writeup-medium{ border-color: var(--accent); background: rgba(44,255,5,0.06); }
+
+  @media (max-width: 700px){
+    .writeup-hero{ padding-top: 120px; }
+    .writeup-card-head{ padding: 10px 16px; }
+    .writeup-card-body{ padding: 18px 18px 20px; }
+  }
 </style>
 </head>
 <body data-page="writeups">
@@ -64,14 +85,13 @@
 <header class="site-header">
   <div class="container header-inner">
     <a href="index.html#hero" class="logo" aria-label="eve portfolio home">
-      <span class="prompt">&gt;_</span> evelyn@portfolio <span class="blink-dot" aria-hidden="true"></span>
+      <span class="prompt">&gt;_</span> evelyn@portfolio
     </a>
     <aside class="side-nav" aria-label="Primary">
       <nav class="side-nav-list">
         <a href="index.html#education" class="nav-link" data-section="education">education</a>
         <a href="index.html#achievements" class="nav-link" data-section="achievements">achievements</a>
         <a href="index.html#competitions" class="nav-link" data-section="competitions">competitions</a>
-        <a href="index.html#projects" class="nav-link" data-section="projects">projects</a>
         <a href="index.html#writeups" class="nav-link" data-section="writeups">write-ups</a>
         <a href="index.html#skills" class="nav-link" data-section="skills">skills</a>
         <a href="index.html#contact" class="nav-link" data-section="contact">contact</a>
@@ -87,7 +107,6 @@
     <a href="index.html#education" class="nav-link">education</a>
     <a href="index.html#achievements" class="nav-link">achievements</a>
     <a href="index.html#competitions" class="nav-link">competitions</a>
-    <a href="index.html#projects" class="nav-link">projects</a>
     <a href="index.html#writeups" class="nav-link">write-ups</a>
     <a href="index.html#skills" class="nav-link">skills</a>
     <a href="index.html#contact" class="nav-link">contact</a>
@@ -95,30 +114,19 @@
 </header>
 
 <main id="main">
-  <div class="blog-hero">
-    <a href="index.html#hero" class="blog-back">&larr; back to home</a>
+  <div class="writeup-hero">
+    <a href="index.html#writeups" class="writeup-back">&larr; back to home</a>
     <div class="post-eyebrow" style="font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;">CTF Write-ups</div>
-    <h1 class="section-title">Every solve, filterable by category and difficulty.</h1>
-    <p class="section-desc">Walkthroughs from CTFs and training platforms — web, pwn, crypto, reversing, and forensics challenges.</p>
+    <h1 class="section-title">Notes from the field.</h1>
+    <p class="section-desc">Walkthroughs and technical notes from CTFs, cybersecurity challenges, and security research — published on Medium.</p>
   </div>
 
-  <div class="blog-controls">
-    <div class="blog-search">
-      <input id="blog-search" type="text" placeholder="search by title or category&hellip;" autocomplete="off">
-    </div>
-    <div class="blog-filters" id="category-filters">
-      <!-- category pills injected by script -->
-    </div>
-    <div class="blog-filters difficulty-filters" id="difficulty-filters">
-      <!-- difficulty pills injected by script -->
-    </div>
-  </div>
+  <div class="writeup-list-wrap">
 
-  <div class="blog-list-wrap">
-    <div class="blog-list" id="all-writeup-list">
-      <!-- Rendered by inline script below from js/writeup_data.js -->
+    <div id="writeups-container">
+      <!-- Write-ups are rendered from js/writeups_data.js -->
     </div>
-    <div class="blog-empty" id="blog-empty" style="display:none;">No write-ups match that search/filter.</div>
+
   </div>
 </main>
 
@@ -142,157 +150,6 @@
 
 <script src="js/writeup_data.js"></script>
 <script src="js/script.js"></script>
-<script>
-  (function(){
-    const posts = window.writeups || {};
-
-    // Same freshness rules as the blog index: sort newest-first using
-    // publishedAt (falls back to the display `date` field), and show the
-    // NEW badge only for 14 days after publishedAt.
-    function parseDate(post){
-      const iso = post.publishedAt ? Date.parse(post.publishedAt) : NaN;
-      if(!isNaN(iso)) return iso;
-      const fallback = Date.parse('1 ' + (post.date || ''));
-      return isNaN(fallback) ? 0 : fallback;
-    }
-
-    const TIME = 7 * 24 * 60 * 60 * 1000;
-    function isRecent(post){
-      if(!post.publishedAt) return false;
-      const published = Date.parse(post.publishedAt);
-      return !isNaN(published) && (Date.now() - published) < TIME;
-    }
-
-    const order = (window.writeupOrder || Object.keys(posts))
-      .slice()
-      .sort((a, b) => parseDate(posts[b]) - parseDate(posts[a]));
-
-    const listEl = document.getElementById('all-writeup-list');
-    const emptyMsg = document.getElementById('blog-empty');
-    const categoryFiltersEl = document.getElementById('category-filters');
-    const difficultyFiltersEl = document.getElementById('difficulty-filters');
-    const searchInput = document.getElementById('blog-search');
-
-    // Categories and difficulties, both de-duped and sorted
-    const allCategories = [...new Set(order.map(key => posts[key].category).filter(Boolean))].sort();
-    const difficultyOrder = ["easy", "medium", "hard", "insane"];
-    const allDifficulties = difficultyOrder.filter(d =>
-      order.some(key => posts[key].difficulty === d)
-    );
-
-    let activeCategories = new Set();
-    let activeDifficulties = new Set();
-    let searchTerm = '';
-
-    function excerptOf(post){
-      const clean = (post.intro || '').replace(/\s+/g, ' ').trim();
-      return clean.length > 140 ? clean.slice(0, 140).trim() + '\u2026' : clean;
-    }
-
-    function itemHTML(key){
-      const p = posts[key];
-      const isNew = isRecent(p);
-      const metaBits = [p.date, p.read].filter(Boolean).join(' &middot; ');
-      return `
-        <a href="writeup-post.html?writeup=${key}" class="blog-item">
-          <div class="blog-main">
-            <div class="blog-title">${p.title}${isNew ? ' <span class="new-badge">NEW</span>' : ''}</div>
-            <div class="blog-excerpt">${excerptOf(p)}</div>
-            <div class="blog-meta-row">
-              ${p.category ? `<span class="writeup-chip">${p.category}</span>` : ''}
-              ${p.difficulty ? `<span class="writeup-chip ${p.difficulty}">${p.difficulty}</span>` : ''}
-              ${p.platform ? `<span class="writeup-chip">${p.platform}</span>` : ''}
-              ${p.points != null ? `<span class="writeup-chip">${p.points} pts</span>` : ''}
-            </div>
-          </div>
-          <span class="blog-meta">${metaBits}</span>
-          <span class="blog-arrow">&rarr;</span>
-        </a>`;
-    }
-
-    function matches(key){
-      const p = posts[key];
-      const inCategory = activeCategories.size === 0 || activeCategories.has(p.category);
-      const inDifficulty = activeDifficulties.size === 0 || activeDifficulties.has(p.difficulty);
-      const haystack = (p.title + ' ' + (p.intro || '') + ' ' + (p.category || '') + ' ' + (p.platform || '')).toLowerCase();
-      const inSearch = !searchTerm || haystack.includes(searchTerm);
-      return inCategory && inDifficulty && inSearch;
-    }
-
-    function render(){
-      const visible = order.filter(matches);
-      listEl.innerHTML = visible.map(itemHTML).join('');
-      emptyMsg.style.display = visible.length ? 'none' : 'block';
-    }
-
-    function renderCategoryFilters(){
-      const pillsHTML = allCategories.map(cat => `<button type="button" class="filter-pill" data-cat="${cat}">${cat}</button>`).join('');
-      categoryFiltersEl.innerHTML = `
-        <button type="button" class="filter-pill" data-cat="__all">all categories</button>
-        ${pillsHTML}
-        <span class="filter-count" id="filter-count"></span>`;
-      categoryFiltersEl.querySelectorAll('.filter-pill').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const cat = btn.dataset.cat;
-          if(cat === '__all'){
-            activeCategories.clear();
-          } else {
-            if(activeCategories.has(cat)) activeCategories.delete(cat);
-            else activeCategories.add(cat);
-          }
-          updatePillStates();
-          render();
-        });
-      });
-    }
-
-    function renderDifficultyFilters(){
-      const pillsHTML = allDifficulties.map(d => `<button type="button" class="filter-pill" data-diff="${d}">${d}</button>`).join('');
-      difficultyFiltersEl.innerHTML = `
-        <button type="button" class="filter-pill" data-diff="__all">all difficulties</button>
-        ${pillsHTML}`;
-      difficultyFiltersEl.querySelectorAll('.filter-pill').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const d = btn.dataset.diff;
-          if(d === '__all'){
-            activeDifficulties.clear();
-          } else {
-            if(activeDifficulties.has(d)) activeDifficulties.delete(d);
-            else activeDifficulties.add(d);
-          }
-          updatePillStates();
-          render();
-        });
-      });
-    }
-
-    function updatePillStates(){
-      categoryFiltersEl.querySelectorAll('.filter-pill').forEach(btn => {
-        const cat = btn.dataset.cat;
-        const isActive = cat === '__all' ? activeCategories.size === 0 : activeCategories.has(cat);
-        btn.classList.toggle('active', isActive);
-      });
-      difficultyFiltersEl.querySelectorAll('.filter-pill').forEach(btn => {
-        const d = btn.dataset.diff;
-        const isActive = d === '__all' ? activeDifficulties.size === 0 : activeDifficulties.has(d);
-        btn.classList.toggle('active', isActive);
-      });
-      const count = document.getElementById('filter-count');
-      if(count) count.textContent = `${order.filter(matches).length} of ${order.length}`;
-    }
-
-    searchInput.addEventListener('input', (e) => {
-      searchTerm = e.target.value.trim().toLowerCase();
-      updatePillStates();
-      render();
-    });
-
-    renderCategoryFilters();
-    renderDifficultyFilters();
-    updatePillStates();
-    render();
-  })();
-</script>
 
 </body>
 </html>

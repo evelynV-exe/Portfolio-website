@@ -24,5 +24,11 @@ window.competitions = [
     description: "Algorithmic problem solving, 3 hours, 3 problems.",
     position: "5th / 20 teams",
     date: "14 - 08 - 2026"
+  },
+  {
+    event: "Holmes CTF 2026: The Reichenbach Directive",
+    description: "Blue team cybersecurity scenario, 5 days, incident investigation and response.",
+    position: "1105 / 5637 teams",
+    date: "21.09.2026"
   }
 ];

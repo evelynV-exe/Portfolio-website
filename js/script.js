@@ -14,7 +14,7 @@
   }));
 
   // ---------- Active nav on scroll ----------
-  const sections = ['education','achievements', 'competitions', 'projects','writeups','skills','contact'];
+  const sections = ['education','achievements', 'competitions','writeups','skills','contact'];
   const navLinks = document.querySelectorAll('.nav-link[data-section]');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {

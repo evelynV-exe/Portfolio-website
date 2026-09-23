@@ -72,6 +72,24 @@ window.achievements = {
     image: "img/cert/cyber-boot-camp.jpg", 
     link: "", 
     featured: true },
+  'cyber-hero-2026': { 
+    title: "Participated in Cyber Hero 2026", 
+    date: "2026-09-12", 
+    category: "CyberSecurity", 
+    description: "Jeopardy-style CTF featuring Miscellaneous, Blue Team, and Red Team cybersecurity challenges with write-ups submissions.",
+    tags: ["Cybersecurity", "CTF"], 
+    image: "img/cert/cyber-hero.png", 
+    link: "", 
+    featured: true },
+  'holmes-2026': { 
+    title: "Participated in Holmes CTF 2026: The Reichenbach Directive, blue team scenarios", 
+    date: "2026-09-21", 
+    category: "CyberSecurity", 
+    description: "Participated in Holmes CTF 2026: The Reichenbach Directive, completing blue-team cybersecurity scenarios focused on digital forensics, incident investigation, and analyzing evidence to identify and respond to security incidents.", 
+    tags: ["Cybersecurity", "CTF"], 
+    image: "img/cert/holmes2026.png", 
+    link: "", 
+    featured: true },
 };
 
 window.achievementOrder = [
@@ -80,4 +98,6 @@ window.achievementOrder = [
   "basic-cybersecurity",
   "rmutl-python-competition",
   "cyber-bootcamp-2026",
+  "cyber-hero-2026",
+  "holmes-2026"
 ];
