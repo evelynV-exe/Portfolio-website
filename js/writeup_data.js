@@ -54,6 +54,14 @@ window.writeups = [
     description: "RSA cryptography challenge involving analysis of weak encryption parameters and recovering the plaintext from the provided ciphertext.",
     tags: ["Cryptography", "hard"],
     url: "https://medium.com/@inthepondddd/2026-08-09-traffic-analysis-exercise-write-up-df445f132f72"
+  },
+  {
+    event: "picoCTF 2026 - Timestamped Secrets",
+    slug: "picoCTF-2026-Timestamped-Secrets",
+    date: "01.10.2026",
+    description: "AES cryptography challenge involving a timestamp-derived key and decrypting the provided ciphertext.",
+    tags: ["Cryptography", "medium"],
+    url: "https://medium.com/@inthepondddd/timestamped-secrets-picoctf-2026-cryptography-81dd923b720e"
   }
 ];
 
